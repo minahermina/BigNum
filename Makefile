@@ -1,5 +1,5 @@
 CC ?= clang
-CFLAGS += -Wall -Wextra -O2 -Iinclude -fPIC
+CFLAGS += -Wall -Wextra -O2 -Iinclude
 LDFLAGS +=
 SRC_DIR = src
 TEST_DIR = test
@@ -8,7 +8,7 @@ MKDIR = mkdir -p
 RM = rm -rf
 
 SHARED_LIB_EXT = so
-SHARED_LIB_FLAGS = -shared
+SHARED_LIB_FLAGS = -shared -fPIC
 
 SRC_FILES = \
 	$(SRC_DIR)/bignum.c
@@ -39,10 +39,10 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(TEST_BIN): $(TEST_DIR)/main.c $(OBJ_FILES)
-	$(CC) $(CFLAGS) -o $@ $(TEST_DIR)/main.c $(OBJ_FILES) $(LDFLAGS)
+	$(CC) $(TEST_DIR)/main.c $(OBJ_FILES) $(CFLAGS) -o $@ $(LDFLAGS)
 
 $(LIB_PATH): $(OBJ_FILES)
-	$(CC) $(SHARED_LIB_FLAGS) -o $@ $(OBJ_FILES) $(LDFLAGS)
+	$(CC) $(OBJ_FILES) $(SHARED_LIB_FLAGS) -o $@ $(LDFLAGS)
 
 clean:
 	$(RM) $(BUILD_DIR)

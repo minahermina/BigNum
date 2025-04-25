@@ -282,7 +282,7 @@ arena_dump(Arena *arena)
 
     printf("=============================\n");
     for(curr = arena->head; curr != NULL; curr = curr->next ){
-        printf("===> Region %lu:\n", cnt);
+        printf("===> Region %zu:\n", cnt);
         arena__region__dump(curr);
         cnt++;
     }

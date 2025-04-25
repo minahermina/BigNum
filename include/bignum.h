@@ -35,10 +35,17 @@ typedef struct {
 
 
 BigNum* bignum_new(Arena *arena);
+int8_t bignum_add_word(BigNum* num, BIGNUM_WORD word, Arena *arena);
 uint8_t bignum_copy(BigNum *dest, BigNum *src, Arena *arena);
 BigNum* bignum_dup(BigNum *src, Arena *arena);
-char *bignum_2dec(const BigNum *num);
-char *bignum_2hex(const BigNum *num);
+
+/*Conversion*/
+int *bignum_bn2dec(const BigNum *num, char *dest, size_t len);
+int *bignum_bn2hex(const BigNum *num, char *dest, size_t len);
+int *bignum_bn2bin(const BigNum *num, char *dest, size_t len);
+BigNum *bignum_bin2bn(const char *str, size_t len);
+BigNum *bignum_hex2bn(const char *str, size_t len);
+BigNum *bignum_dec2bn(const char *str, size_t len);
 
 /* Basic Arithmetic */
 int bignum_add(BigNum *res, const BigNum *a, const BigNum *b);

@@ -37,15 +37,15 @@ char *bignum_2dec(const BigNum *num);
 char *bignum_2hex(const BigNum *num);
 
 /* Basic Arithmetic */
-int bignum_add(BigNum *r, const BigNum *a, const BigNum *b);
-int bignum_sub(BigNum *r, const BigNum *a, const BigNum *b);
-int bignum_mul(BigNum *r, const BigNum *a, const BigNum *b, Arena *arena);
+int bignum_add(BigNum *res, const BigNum *a, const BigNum *b);
+int bignum_sub(BigNum *res, const BigNum *a, const BigNum *b);
+int bignum_mul(BigNum *res, const BigNum *a, const BigNum *b, Arena *arena);
 int bignum_div(BigNum *dv, BigNum *rem, const BigNum *a, const BigNum *d, Arena *arena);
 int bignum_mod(BigNum *rem, const BigNum *a, const BigNum *m, Arena *arena);
 
 /* Modular Arithmetic */
-int bignum_mod_exp(BigNum *r, const BigNum *a, const BigNum *p, const BigNum *m, Arena *arena);
-int bignum_mod_inverse(BigNum *r, const BigNum *a, const BigNum *n, Arena *arena);
+int bignum_mod_exp(BigNum *res, const BigNum *a, const BigNum *p, const BigNum *m, Arena *arena);
+int bignum_mod_inverse(BigNum *res, const BigNum *a, const BigNum *n, Arena *arena);
 
 int bignum_cmp(const BigNum *a, const BigNum *b);
 int bignum_is_zero(const BigNum *a);

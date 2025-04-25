@@ -8,27 +8,31 @@
 #if defined(__x86_64__)
     typedef uint64_t BIGNUM_WORD;
     #define BIGNUM_WORD_SIZE 64
-#endif
-#if defined(__x86_32__)
+#elif defined(__i386__) || defined(__i686__)
     typedef uint32_t BIGNUM_WORD;
     #define BIGNUM_WORD_SIZE 32
 #endif
 
+
+#define BIGNUM_DEFAULT_WORDS_SIZE 16
+#define TOHEX(number) bignum_int2hex((BIGNUM_WORD)(number))
 #define DEBUG_BIGNUM(num) \
 do {\
-    printf("BigNum: %p\n", &(num));       \
-    printf("data: %p\n", (num).digits);       \
-    printf("size: %d\n", (num).size);         \
-    printf("capacity: %d\n", (num).capacity); \
-    printf("negative: %d\n", (num).negative); \
+    printf("--------------------------------\n");  \
+    printf("BigNum: %p\n", &(num));                \
+    printf("data: %p\n", (num).words);             \
+    printf("size: %zu\n", (num).size);             \
+    printf("capacity: %zu\n", (num).capacity);     \
+    printf("negative: %d\n", (num).negative);      \
 } while(0)\
 
 typedef struct {
-    BIGNUM_WORD *digits;
-    uint16_t size;
-    uint16_t capacity;
+    BIGNUM_WORD *words;
+    size_t size;
+    size_t capacity;
     int negative;
 } BigNum;
+
 
 BigNum* bignum_new(Arena *arena);
 uint8_t bignum_copy(BigNum *dest, BigNum *src, Arena *arena);

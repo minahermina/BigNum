@@ -1,5 +1,7 @@
 #define ARENA_ALLOCATOR_IMPLEMENTATION
 #include <bignum.h>
+#include <inttypes.h>
+#include <assert.h>
 
 #define BIGNUM_SIZE sizeof(BigNum)
 #define BIGNUM_SIZE sizeof(BigNum)

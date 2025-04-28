@@ -32,6 +32,33 @@ bignum_new(Arena *arena)
     return num;
 }
 
+void
+bignum_resize(BigNum* num, size_t new_size, Arena *arena)
+{
+    assert(num != NULL);
+    if (new_size >= num->capacity){
+        num->capacity = new_size * 2;
+
+        if (arena == NULL) {
+            num->words = (BIGNUM_WORD*)realloc(num->words, num->capacity * sizeof(BIGNUM_WORD));
+        } else {
+            num->words = (BIGNUM_WORD*)arena_realloc(arena, num->words, num->size, num->capacity);
+        }
+    }
+    assert(num->words != NULL);
+    num->size = new_size;
+}
+
+void
+bignum_free(BigNum *num)
+{
+    assert(num != NULL);
+    assert(num->words != NULL);
+
+    free(num->words);
+    free(num);
+}
+
 BigNum*
 bignum_from_int(int n, Arena* arena)
 {

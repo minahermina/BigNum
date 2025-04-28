@@ -5,6 +5,7 @@
 
 #define BIGNUM_SIZE sizeof(BigNum)
 #define BIGNUM_SIZE sizeof(BigNum)
+#define ABS(x) (x < 0 ? -x : x)
 
 typedef unsigned long WORD;
 
@@ -31,6 +32,19 @@ bignum_new(Arena *arena)
     return num;
 }
 
+BigNum*
+bignum_from_int(int n, Arena* arena)
+{
+    BigNum *num = bignum_new(arena);
+    if(ABS(n) != n)
+        num->negative = 1;
+
+    n = ABS(n);
+    bignum_append_word(num, (BIGNUM_WORD)n, arena);
+    return num;
+}
+
+BigNum*
 int8_t
 bignum_add_word(BigNum* num, BIGNUM_WORD word, Arena *arena)
 {

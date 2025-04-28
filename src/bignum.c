@@ -4,8 +4,8 @@
 #include <assert.h>
 
 #define BIGNUM_SIZE sizeof(BigNum)
-#define BIGNUM_SIZE sizeof(BigNum)
 #define ABS(x) (x < 0 ? -x : x)
+#define CEIL(x) ((x) == (size_t)(x) ? (size_t)(x) : (size_t)((x) + 1))
 
 typedef unsigned long WORD;
 
@@ -235,7 +235,7 @@ bignum_print_words(BigNum* num, char format)
 }
 
 int8_t
-bignum_add_word(BigNum* num, BIGNUM_WORD word, Arena *arena)
+bignum_append_word(BigNum* num, BIGNUM_WORD word, Arena *arena)
 {
     size_t newsize = num->size + 1;
     assert(num != NULL);
@@ -254,10 +254,10 @@ bignum_add_word(BigNum* num, BIGNUM_WORD word, Arena *arena)
 }
 
 
-const char* 
+const char*
 bignum_int2hex(BIGNUM_WORD number)
 {
-    static char buffer[256] = {'\0'};
+    static char buffer[2048] = {'\0'};
     #if BIGNUM_WORD_SIZE == 64
         snprintf(buffer, sizeof(buffer), "%" PRIX64 "", number);
     #elif BIGNUM_WORD_SIZE  == 32
@@ -265,7 +265,6 @@ bignum_int2hex(BIGNUM_WORD number)
     #else
         #error "Unsupporetd architecture"
     #endif
-
 
     return buffer;
 }

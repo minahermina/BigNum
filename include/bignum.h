@@ -8,9 +8,11 @@
 #if defined(__x86_64__)
     typedef uint64_t BIGNUM_WORD;
     #define BIGNUM_WORD_SIZE 64
+    #define BIGNUM_WORD_MASK1 ((BIGNUM_WORD)-1)
 #elif defined(__i386__) || defined(__i686__)
     typedef uint32_t BIGNUM_WORD;
     #define BIGNUM_WORD_SIZE 32
+    #define BIGNUM_WORD_MASK1 ((BIGNUM_WORD)-1)
 #endif
 
 
@@ -34,18 +36,25 @@ typedef struct {
 } BigNum;
 
 
+const char* bignum_int2hex(BIGNUM_WORD number);
+
 BigNum* bignum_new(Arena *arena);
-int8_t bignum_add_word(BigNum* num, BIGNUM_WORD word, Arena *arena);
+void bignum_free(BigNum *num);
+int8_t bignum_append_word(BigNum* num, BIGNUM_WORD word, Arena *arena);
+void bignum_resize(BigNum* num, size_t new_size, Arena *arena);
 uint8_t bignum_copy(BigNum *dest, BigNum *src, Arena *arena);
 BigNum* bignum_dup(BigNum *src, Arena *arena);
+void bignum_print_words(BigNum* num, char format);
+void bignum_print(BigNum* num, char format);
 
 /*Conversion*/
 int *bignum_bn2dec(const BigNum *num, char *dest, size_t len);
 int *bignum_bn2hex(const BigNum *num, char *dest, size_t len);
 int *bignum_bn2bin(const BigNum *num, char *dest, size_t len);
-BigNum *bignum_bin2bn(const char *str, size_t len);
-BigNum *bignum_hex2bn(const char *str, size_t len);
-BigNum *bignum_dec2bn(const char *str, size_t len);
+BigNum *bignum_from_int(int n, Arena* arena);
+BigNum *bignum_from_bin(const char *str, size_t len);
+BigNum *bignum_from_dec(const char *str, size_t len, Arena* arena);
+BigNum *bignum_from_hex(const char *str, size_t len, Arena* arena);
 
 /* Basic Arithmetic */
 int bignum_add(BigNum *res, const BigNum *a, const BigNum *b);

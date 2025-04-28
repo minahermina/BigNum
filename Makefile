@@ -1,6 +1,6 @@
 CC := gcc
 CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_XOPEN_SOURCE=700L -D_POSIX_C_SOURCE=200809L
-CFLAGS += -std=c99 -Wall -Wextra -O2 -Iinclude
+CFLAGS += -std=c99 -Wall -Wextra -ggdb -O2 -Iinclude 
 LDFLAGS +=
 SRC_DIR = src
 TEST_DIR = test
@@ -18,7 +18,7 @@ SRC_FILES = \
 
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC_FILES))
 
-TEST_BIN = $(BUILD_DIR)/test
+TEST_BIN = $(BUILD_DIR)/main
 LIB_NAME = libbignum
 LIB_PATH = $(BUILD_DIR)/$(LIB_NAME).$(SHARED_LIB_EXT)
 

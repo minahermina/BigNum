@@ -20,7 +20,7 @@ bignum_new(Arena *arena)
         num->words = (BIGNUM_WORD*)malloc(size);
     } else{
         num = (BigNum*)arena_alloc(arena, BIGNUM_SIZE);
-        num->words = (BIGNUM_WORD*) arena_alloc(arena, BIGNUM_SIZE);
+        num->words = (BIGNUM_WORD*) arena_alloc(arena, size);
     }
 
     assert(num != NULL);

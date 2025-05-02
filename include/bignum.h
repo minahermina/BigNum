@@ -68,5 +68,7 @@ int bignum_mod_inverse(BigNum *res, const BigNum *a, const BigNum *n, Arena *are
 
 int bignum_is_zero(const BigNum *a);
 int bignum_is_one(const BigNum *a);
+int bignum_cmp(const BigNum *num1, const BigNum *num2);             /*done*/
+int bignum_is_negative(const BigNum *num);                          /*done*/
 
 #endif /*BigNum*/

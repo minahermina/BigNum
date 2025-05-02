@@ -62,6 +62,8 @@ int bignum_mul(BigNum *res, const BigNum *a, const BigNum *b, Arena *arena);
 int bignum_div(BigNum *dv, BigNum *rem, const BigNum *a, const BigNum *d, Arena *arena);
 int bignum_mod(BigNum *rem, const BigNum *a, const BigNum *m, Arena *arena);
 
+int bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena);
+BigNumWord bignum_lshift_word(BigNumWord word, size_t nbits);
 /* Modular Arithmetic */
 int bignum_mod_exp(BigNum *res, const BigNum *a, const BigNum *p, const BigNum *m, Arena *arena);
 int bignum_mod_inverse(BigNum *res, const BigNum *a, const BigNum *n, Arena *arena);

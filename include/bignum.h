@@ -36,12 +36,12 @@ typedef struct {
 
 BigNum* bignum_new(Arena *arena);
 void bignum_free(BigNum *num);
-BigNum* bignum_dup(BigNum *src, Arena *arena);
 void bignum_print_words(BigNum* num, char format);
 void bignum_print(BigNum* num, char format);
 int bignum_append_word(BigNum* num, const BigNumWord word, Arena *arena); /*done*/
 void bignum_resize(BigNum* num, size_t new_size, Arena *arena);          /*done*/
 int bignum_copy(BigNum *dest, BigNum *src, Arena *arena);               /*done*/
+BigNum* bignum_dup(BigNum *src, Arena *arena);                          /*done*/
 void bignum_print_words(const BigNum* num, char format);                      /*done*/
 
 /*Conversion*/
@@ -66,9 +66,7 @@ BigNumWord bignum_lshift_word(BigNumWord word, size_t nbits);
 int bignum_mod_exp(BigNum *res, const BigNum *a, const BigNum *p, const BigNum *m, Arena *arena);
 int bignum_mod_inverse(BigNum *res, const BigNum *a, const BigNum *n, Arena *arena);
 
-int bignum_cmp(const BigNum *a, const BigNum *b);
 int bignum_is_zero(const BigNum *a);
 int bignum_is_one(const BigNum *a);
-int bignum_is_negative(const BigNum *a);
 
 #endif /*BigNum*/

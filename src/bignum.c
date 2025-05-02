@@ -297,33 +297,28 @@ bignum_print_words(const BigNum* num, char format)
     }
 }
 
+/*NOTE: this function assume that either num1 or num2 has no leading zero words*/
+int
+bignum_cmp(const BigNum *num1, const BigNum *num2)
 {
-    size_t newsize = num->size + 1;
-    assert(num != NULL);
-    if(arena == NULL) {
-        /*TODO: implement a simple realloc macro for resizing BigNum (just copy it from the arena_allocator.h))*/
-        num->words = (BIGNUM_WORD*) realloc(num->words, newsize);
-        assert(num->words != NULL);
-    }else {
-        num->words = (BIGNUM_WORD*) arena_realloc(arena, num->words, num->size, newsize);
+    size_t i;
+    assert(num1 != NULL || num2 != NULL);
+    if((num1->negative != num2->negative) || (num1->size != num2->size)){
+        return -1;
     }
-    assert(num->words != NULL);
 
-    num->words[num->size] = word;
-    num->size = newsize;
-    return 0;
+    for(i = 0; i < num1->size; ++i){
+        if(num1->words[i] != num2->words[i]){
+            return -1;
+        }
+    }
+
+    return 1;
 }
 
 
+int
+bignum_is_negative(const BigNum *num)
 {
-    static char buffer[2048] = {'\0'};
-    #if BIGNUM_WORD_SIZE == 64
-        snprintf(buffer, sizeof(buffer), "%" PRIX64 "", number);
-    #elif BIGNUM_WORD_SIZE  == 32
-        snprintf(buffer, sizeof(buffer), "%" PRIX32 "", number);
-    #else
-        #error "Unsupporetd architecture"
-    #endif
-
-    return buffer;
+    return num->negative;
 }

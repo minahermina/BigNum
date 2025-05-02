@@ -6,18 +6,16 @@
 #include <arena_allocator.h>
 
 #if defined(__x86_64__)
-    typedef uint64_t BIGNUM_WORD;
+    typedef uint64_t BigNumWord;
     #define BIGNUM_WORD_SIZE 64
-    #define BIGNUM_WORD_MASK1 ((BIGNUM_WORD)-1)
+    #define BIGNUM_MASK1 ((BigNumWord)-1)
 #elif defined(__i386__) || defined(__i686__)
-    typedef uint32_t BIGNUM_WORD;
+    typedef uint32_t BigNumWord;
     #define BIGNUM_WORD_SIZE 32
-    #define BIGNUM_WORD_MASK1 ((BIGNUM_WORD)-1)
+    #define BIGNUM_MASK1 ((BigNumWord)-1)
 #endif
 
 
-#define BIGNUM_DEFAULT_WORDS_SIZE 16
-#define TOHEX(number) bignum_int2hex((BIGNUM_WORD)(number))
 #define DEBUG_BIGNUM(num) \
 do {\
     printf("--------------------------------\n");  \
@@ -29,7 +27,7 @@ do {\
 } while(0)\
 
 typedef struct {
-    BIGNUM_WORD *words;
+    BigNumWord *words;
     size_t size;
     size_t capacity;
     int negative;

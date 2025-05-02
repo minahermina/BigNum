@@ -1,9 +1,9 @@
 CC := gcc
 CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_XOPEN_SOURCE=700L -D_POSIX_C_SOURCE=200809L
-CFLAGS += -std=c99 -Wall -Wextra -ggdb -O2 -Iinclude 
+CFLAGS += -std=c99 -Wall -Wextra -ggdb -O2 -Iinclude
 LDFLAGS +=
 SRC_DIR = src
-TEST_DIR = test
+# TEST_DIR = test
 BUILD_DIR = build
 MKDIR = mkdir -p
 
@@ -11,8 +11,8 @@ SHARED_LIB_EXT = so
 SHARED_LIB_FLAGS = -shared -fPIC
 
 SRC_FILES = \
-	$(SRC_DIR)/bignum.c
-#	$(SRC_DIR)/bignum_add.c \
+	$(SRC_DIR)/bignum.c \
+	$(SRC_DIR)/bignum_shift.c \
 #	$(SRC_DIR)/bignum_mul.c \
 #	$(SRC_DIR)/bignum_div.c
 
@@ -38,8 +38,8 @@ $(OBJ_FILES): build_dir
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-$(TEST_BIN): $(TEST_DIR)/main.c $(OBJ_FILES)
-	$(CC) $(CPPFLAGS) $(TEST_DIR)/main.c $(OBJ_FILES) $(CFLAGS) -o $@ $(LDFLAGS)
+$(TEST_BIN): main.c $(OBJ_FILES)
+	$(CC) $(CPPFLAGS) main.c $(OBJ_FILES) $(CFLAGS) -o $@ $(LDFLAGS)
 
 $(LIB_PATH): $(OBJ_FILES)
 	$(CC) $(CPPFLAGS) $(OBJ_FILES) $(SHARED_LIB_FLAGS) -o $@ $(LDFLAGS)

@@ -84,6 +84,23 @@ bignum_resize(BigNum* num, size_t new_size, Arena *arena)
     return ;
 }
 
+int
+bignum_copy(BigNum *dest, BigNum *src, Arena *arena)
+{
+    size_t i;
+    assert(dest != NULL);
+    assert(src != NULL);
+
+    bignum_resize(dest, src->size, arena);
+
+    dest->negative = src->negative;
+    for(i = 0; i < dest->size; ++i){
+        dest->words[i] = src->words[i];
+    }
+
+    return 0;
+}
+
 void
 bignum_free(BigNum *num)
 {

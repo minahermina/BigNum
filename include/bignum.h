@@ -38,12 +38,12 @@ const char* bignum_int2hex(BIGNUM_WORD number);
 
 BigNum* bignum_new(Arena *arena);
 void bignum_free(BigNum *num);
-void bignum_resize(BigNum* num, size_t new_size, Arena *arena);
-uint8_t bignum_copy(BigNum *dest, BigNum *src, Arena *arena);
 BigNum* bignum_dup(BigNum *src, Arena *arena);
 void bignum_print_words(BigNum* num, char format);
 void bignum_print(BigNum* num, char format);
 int bignum_append_word(BigNum* num, const BigNumWord word, Arena *arena); /*done*/
+void bignum_resize(BigNum* num, size_t new_size, Arena *arena);          /*done*/
+int bignum_copy(BigNum *dest, BigNum *src, Arena *arena);               /*done*/
 void bignum_print_words(const BigNum* num, char format);                      /*done*/
 
 /*Conversion*/

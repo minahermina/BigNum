@@ -1,11 +1,11 @@
 #define ARENA_ALLOCATOR_IMPLEMENTATION
 #include <bignum.h>
+
 #include <inttypes.h>
 #include <assert.h>
 
 #define ABS(x) (x < 0 ? -x : x)
 
-typedef unsigned long WORD;
 void bignum_print_word(const BigNumWord word, char format){
     switch(format){
 
@@ -72,7 +72,6 @@ bignum_resize(BigNum* num, size_t new_size, Arena *arena)
     assert(num != NULL);
     if (new_size >= num->capacity){
         num->capacity = new_size * 2;
-
         if (arena == NULL) {
             num->words = (BigNumWord*)realloc(num->words, (num->capacity * sizeof(BigNumWord)));
         } else {
@@ -150,6 +149,31 @@ bignum_append_word(BigNum *num, const BigNumWord word, Arena *arena)
     return 0;
 }
 
+int
+bignum_prepend_zero_words(BigNum *num, size_t cnt, Arena *arena)
+{
+    size_t oldsize, i;
+    assert(num != NULL);
+
+    if (cnt == 0)
+        return 0;
+
+    oldsize = num->size;
+
+    bignum_resize(num, oldsize + cnt, arena);
+
+    //shift from back to front to avoid overwriting
+    for (i = oldsize; i > 0; i--) {
+        num->words[i + cnt - 1] = num->words[i - 1];
+    }
+
+    // Zero out the prepended cnt words
+    for (i = 0; i < cnt; i++) {
+        num->words[i] = 0;
+    }
+    return 0;
+}
+
 BigNum*
 bignum_from_int(int n, Arena* arena)
 {
@@ -158,7 +182,8 @@ bignum_from_int(int n, Arena* arena)
         num->negative = 1;
 
     n = ABS(n);
-    bignum_append_word(num, (BIGNUM_WORD)n, arena);
+    bignum_resize(num, 1, arena);
+    num->words[0] = n;
     return num;
 }
 
@@ -167,7 +192,7 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
 {
     BigNum *num = bignum_new(arena);
     size_t start_idx = 0, chars_per_word, word_idx, words_size, i, j;
-    BIGNUM_WORD current_word, value;
+    BigNumWord current_word, value;
     assert(str != NULL);
     assert(num != NULL);
 
@@ -233,11 +258,17 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
     return num;
 }
 
+
+
+/* int bignum_and(BigNum *res, const BigNum *a, const BigNum *b, Arena *arena);
+int bignum_or(BigNum *dv, BigNum *rem, const BigNum *a, const BigNum *d, Arena *arena);
+int bignum_xor(BigNum *dv, BigNum *rem, const BigNum *a, const BigNum *d, Arena *arena);  */
+
 /*prints number in Big-endian from highest word (MSB) to lowest word (LSB)*/
 void bignum_print(BigNum* num, char format)
 {
     assert(num != NULL);
-    BIGNUM_WORD val;
+    BigNumWord val;
     int i;
 
     // Print sign if negative
@@ -249,7 +280,7 @@ void bignum_print(BigNum* num, char format)
         /*bin format*/
         case 'b': {
             for (i = num->size - 1; i >= 0; i--) {
-                BIGNUM_WORD val = num->words[i];
+                BigNumWord val = num->words[i];
 
                 for (int byte = BIGNUM_WORD_SIZE/8 - 1; byte >= 0; byte--) {
                     unsigned char current_byte = (val >> (byte * 8)) & 0xFF;
@@ -334,7 +365,17 @@ bignum_cmp(const BigNum *num1, const BigNum *num2)
     return 1;
 }
 
+/* int
+bignum_is_zero(const BigNum *num)
+{
 
+}
+
+int
+bignum_is_one(const BigNum *num)
+{
+}
+ */
 int
 bignum_is_negative(const BigNum *num)
 {

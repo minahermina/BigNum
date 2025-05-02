@@ -101,6 +101,24 @@ bignum_copy(BigNum *dest, BigNum *src, Arena *arena)
     return 0;
 }
 
+
+BigNum*
+bignum_dup(BigNum *src, Arena *arena)
+{
+    BigNum *num = NULL;
+    assert(src != NULL);
+
+    /*create new BigNum num*/
+    num = bignum_new(arena);
+
+    /*copy from src to num]*/
+    if(bignum_copy(num, src, arena) < 0){
+        return NULL;
+    }
+
+    return num;
+}
+
 void
 bignum_free(BigNum *num)
 {

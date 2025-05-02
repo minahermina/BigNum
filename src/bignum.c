@@ -3,9 +3,7 @@
 #include <inttypes.h>
 #include <assert.h>
 
-#define BIGNUM_SIZE sizeof(BigNum)
 #define ABS(x) (x < 0 ? -x : x)
-#define CEIL(x) ((x) == (size_t)(x) ? (size_t)(x) : (size_t)((x) + 1))
 
 typedef unsigned long WORD;
 

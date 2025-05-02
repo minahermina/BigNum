@@ -315,8 +315,6 @@ bignum_print_words(const BigNum* num, char format)
 }
 
 
-const char*
-bignum_int2hex(BIGNUM_WORD number)
 {
     static char buffer[2048] = {'\0'};
     #if BIGNUM_WORD_SIZE == 64

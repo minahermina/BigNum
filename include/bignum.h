@@ -34,8 +34,6 @@ typedef struct {
 } BigNum;
 
 
-const char* bignum_int2hex(BIGNUM_WORD number);
-
 BigNum* bignum_new(Arena *arena);
 void bignum_free(BigNum *num);
 BigNum* bignum_dup(BigNum *src, Arena *arena);

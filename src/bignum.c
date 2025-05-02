@@ -94,6 +94,27 @@ bignum_free(BigNum *num)
     free(num);
 }
 
+int
+bignum_append_word(BigNum *num, const BigNumWord word, Arena *arena)
+{
+    size_t oldsize;
+
+    assert(num != NULL);
+
+    if(word == 0)
+        return 0;
+
+    oldsize = num->size;
+    bignum_resize(num, oldsize + 1, arena);
+
+    assert(num->words != NULL);
+
+    // Append the new word
+    num->words[oldsize] = word;
+
+    return 0;
+}
+
 BigNum*
 bignum_from_int(int n, Arena* arena)
 {
@@ -259,8 +280,6 @@ bignum_print_words(const BigNum* num, char format)
     }
 }
 
-int8_t
-bignum_append_word(BigNum* num, BIGNUM_WORD word, Arena *arena)
 {
     size_t newsize = num->size + 1;
     assert(num != NULL);

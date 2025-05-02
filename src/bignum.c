@@ -9,22 +9,29 @@
 
 typedef unsigned long WORD;
 
-BigNum*
-bignum_new(Arena *arena)
+BigNum* bignum_new(Arena *arena)
 {
-    BigNum *num = {0};
+    BigNum *num = NULL;
     size_t size = BIGNUM_DEFAULT_WORDS_SIZE;
 
     if(arena == NULL) {
-        num = (BigNum*)malloc(BIGNUM_SIZE);
-        num->words = (BIGNUM_WORD*)malloc(size);
-    } else{
-        num = (BigNum*)arena_alloc(arena, BIGNUM_SIZE);
-        num->words = (BIGNUM_WORD*) arena_alloc(arena, size);
+        num = (BigNum*) malloc(sizeof(BigNum));
+        if(num == NULL) return NULL;
+
+        num->words = (BigNumWord*) calloc(size, sizeof(BigNumWord));
+        if(num->words == NULL) {
+            free(num);
+            return NULL;
+        }
+    } else {
+        num = (BigNum*) arena_alloc(arena, sizeof(BigNum));
+        if(num == NULL) return NULL;
+
+        num->words = (BigNumWord*) arena_alloc(arena, size * sizeof(BigNumWord));
+        if(num->words == NULL) return NULL;
+
     }
 
-    assert(num != NULL);
-    assert(num->words != NULL);
     num->size = 0;
     num->capacity = size;
     num->negative = 0;
@@ -40,13 +47,14 @@ bignum_resize(BigNum* num, size_t new_size, Arena *arena)
         num->capacity = new_size * 2;
 
         if (arena == NULL) {
-            num->words = (BIGNUM_WORD*)realloc(num->words, num->capacity * sizeof(BIGNUM_WORD));
+            num->words = (BigNumWord*)realloc(num->words, (num->capacity * sizeof(BigNumWord)));
         } else {
-            num->words = (BIGNUM_WORD*)arena_realloc(arena, num->words, num->size, num->capacity);
+            num->words = (BigNumWord*)arena_realloc(arena, num->words, num->size, num->capacity);
         }
     }
     assert(num->words != NULL);
     num->size = new_size;
+    return ;
 }
 
 void

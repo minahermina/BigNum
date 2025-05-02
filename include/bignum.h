@@ -44,6 +44,7 @@ uint8_t bignum_copy(BigNum *dest, BigNum *src, Arena *arena);
 BigNum* bignum_dup(BigNum *src, Arena *arena);
 void bignum_print_words(BigNum* num, char format);
 void bignum_print(BigNum* num, char format);
+void bignum_print_words(const BigNum* num, char format);                      /*done*/
 
 /*Conversion*/
 int *bignum_bn2dec(const BigNum *num, char *dest, size_t len);

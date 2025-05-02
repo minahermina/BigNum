@@ -6,6 +6,35 @@
 #define ABS(x) (x < 0 ? -x : x)
 
 typedef unsigned long WORD;
+void bignum_print_word(const BigNumWord word, char format){
+    switch(format){
+
+        /*bin format*/
+        case 'b':{
+            for (int byte = (BIGNUM_WORD_SIZE/8) - 1; byte >= 0; byte--) {
+                unsigned char current_byte = (word >> (byte * 8)) & 0xFF;
+                for (int bit = 7; bit >= 0; bit--) {
+                    printf("%d", (current_byte >> bit) & 1);
+                }
+                printf(" ");
+            }
+            printf("\n");
+            break;
+        }
+        /*hex format*/
+        case 'x':{
+                #if BIGNUM_WORD_SIZE == 64
+                    printf("0x%016" PRIX64 "\n", word);
+                #elif BIGNUM_WORD_SIZE == 32
+                    printf("0x%08" PRIX32 "\n", word);
+                #endif
+            break;
+        }
+        default: break;
+
+    }
+
+}
 
 BigNum* bignum_new(Arena *arena)
 {
@@ -201,39 +230,29 @@ void bignum_print(BigNum* num, char format)
 
 /*printf the array*/
 void
-bignum_print_words(BigNum* num, char format)
+bignum_print_words(const BigNum* num, char format)
 {
     assert(num != NULL);
     assert(format == 'b' || format == 'x');
-    uint16_t i;
+    size_t i;
 
+    BigNumWord word = num->words[i];
     switch(format){
         /*bin format*/
         case 'b': {
             for(i = 0; i < num->size; ++i){
-                printf("word[%" PRIu16 "]: ", i);
-                BIGNUM_WORD val = num->words[i];
-                for (int byte = 0; byte < BIGNUM_WORD_SIZE/8; byte++) {
-                    unsigned char current_byte = (val >> (byte * 8)) & 0xFF;
-                    for (int bit = 7; bit >= 0; bit--) {
-                        printf("%d", (current_byte >> bit) & 1);
-                    }
-                    printf(" ");
-                }
-                printf("\n");
+                printf("word[%zu]:   ", i);
+                word = num->words[i];
+                bignum_print_word(word, 'b');
             }
             break;
         }
         /*hex format*/
         case 'x': {
             for(i = 0; i < num->size; ++i){
-                printf("word[%" PRIu16 "]: ", i);
-                BIGNUM_WORD val = num->words[i];
-                #if BIGNUM_WORD_SIZE == 64
-                    printf("0x%016" PRIX64 "\n", val);
-                #elif BIGNUM_WORD_SIZE == 32
-                    printf("0x%08" PRIX32 "\n", val);
-                #endif
+                printf("word[%zu]:  ", i);
+                word = num->words[i];
+                bignum_print_word(word, 'x');
             }
             break;
         }

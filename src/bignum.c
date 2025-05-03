@@ -59,7 +59,7 @@ BigNum* bignum_new(Arena *arena)
 
     }
 
-    num->size = 0;
+    num->size = 1;
     num->capacity = size;
     num->negative = 0;
 
@@ -109,6 +109,11 @@ bignum_dup(BigNum *src, Arena *arena)
 
     /*create new BigNum num*/
     num = bignum_new(arena);
+
+    if(num == NULL){
+        fprintf(stderr, "Error allocating memory\n");
+        return NULL;
+    }
 
     /*copy from src to num]*/
     if(bignum_copy(num, src, arena) < 0){
@@ -178,6 +183,11 @@ BigNum*
 bignum_from_int(int n, Arena* arena)
 {
     BigNum *num = bignum_new(arena);
+
+    if(num == NULL){
+        fprintf(stderr, "Error allocating memory\n");
+        return NULL;
+    }
     if(ABS(n) != n)
         num->negative = 1;
 
@@ -191,6 +201,12 @@ BigNum*
 bignum_from_hex(const char *str, size_t len, Arena* arena)
 {
     BigNum *num = bignum_new(arena);
+
+    if(num == NULL){
+        fprintf(stderr, "Error allocating memory\n");
+        return NULL;
+    }
+
     size_t start_idx = 0, chars_per_word, word_idx, words_size, i, j;
     BigNumWord current_word, value;
     assert(str != NULL);

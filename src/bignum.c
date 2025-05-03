@@ -382,16 +382,30 @@ bignum_cmp(const BigNum *num1, const BigNum *num2)
 }
 
 /* int
+int
 bignum_is_zero(const BigNum *num)
 {
+    assert(num != NULL);
 
+    if(num->size == 1){
+        return (num->words[0] == 0);
+    }
+
+    return 0;
 }
 
 int
 bignum_is_one(const BigNum *num)
 {
+    assert(num != NULL);
+
+    if(num->size == 1){
+        return (num->words[0] == 1);
+    }
+
+    return 0;
 }
- */
+
 int
 bignum_is_negative(const BigNum *num)
 {

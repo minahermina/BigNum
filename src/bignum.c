@@ -76,14 +76,17 @@ void
 bignum_resize(BigNum* num, size_t new_size, Arena *arena)
 {
     assert(num != NULL);
+
     if (new_size >= num->capacity){
         num->capacity = new_size * 2;
+
         if (arena == NULL) {
-            num->words = (BigNumWord*)realloc(num->words, (num->capacity * sizeof(BigNumWord)));
+            num->words = (BigNumWord*) realloc(num->words, (num->capacity * sizeof(BigNumWord)));
         } else {
-            num->words = (BigNumWord*)arena_realloc(arena, num->words, num->size, num->capacity);
+            num->words = (BigNumWord*) arena_realloc(arena, num->words, num->size, num->capacity);
         }
     }
+
     assert(num->words != NULL);
     num->size = new_size;
     return ;
@@ -194,6 +197,7 @@ bignum_from_int(int n, Arena* arena)
         fprintf(stderr, "Error allocating memory\n");
         return NULL;
     }
+
     if(ABS(n) != n)
         num->negative = 1;
 

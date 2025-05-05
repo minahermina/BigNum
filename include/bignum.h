@@ -77,8 +77,10 @@ BigNum *bignum_from_dec(const char *str, size_t len, Arena *arena);
 BigNum *bignum_from_hex(const char *str, size_t len, Arena *arena); /*done*/
 
 /* Arithmetic */
+int bignum_uadd(BigNum *res, const BigNum *a, const BigNum *b, Arena *arena);
 int bignum_add(BigNum *res, const BigNum *a, const BigNum *b, Arena *arena);
-int bignum_sub(BigNum *res, const BigNum *a, const BigNum *b, Arena *arena);
+int bignum_usubtract(BigNum *res, const BigNum *a, const BigNum *b, Arena *arena);
+int bignum_subtract(BigNum *res, const BigNum *a, const BigNum *b, Arena *arena);
 int bignum_mul(BigNum *res, const BigNum *a, const BigNum *b, Arena *arena);
 int bignum_div(BigNum *dv, BigNum *rem, const BigNum *a, const BigNum *d, Arena *arena);
 int bignum_mod(BigNum *rem, const BigNum *a, const BigNum *m, Arena *arena);

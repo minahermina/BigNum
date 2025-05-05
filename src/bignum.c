@@ -7,8 +7,8 @@
 #define ABS(x) (x < 0 ? -x : x)
 
 void bignum_print_word(const BigNumWord word, char format){
-    switch(format){
 
+    switch(format){
         /*bin format*/
         case 'b':{
             for (int byte = (BIGNUM_WORD_SIZE/8) - 1; byte >= 0; byte--) {
@@ -30,7 +30,9 @@ void bignum_print_word(const BigNumWord word, char format){
                 #endif
             break;
         }
-        default: break;
+        default: 
+            fprintf(stderr, "this format char is not supported");
+            break;
 
     }
 

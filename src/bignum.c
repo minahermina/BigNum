@@ -372,7 +372,13 @@ bignum_print_words(const BigNum* num, char format)
     }
 }
 
-/*NOTE: this function assume that either num1 or num2 has no leading zero words*/
+/*
+    NOTE: this function assume that either num1 or num2 has no leading zero words
+   -1 --> indicates error
+    0 --> num1 > num2
+    1 --> num1 < num2
+    2 --> num1 = num2
+*/
 int
 bignum_cmp(const BigNum *num1, const BigNum *num2)
 {

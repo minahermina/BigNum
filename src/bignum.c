@@ -72,6 +72,19 @@ BigNum* bignum_new(Arena *arena)
     return num;
 }
 
+BigNum*
+bignum_zero(Arena *arena)
+{
+    BigNum *num;
+
+    num = bignum_new(arena);
+
+    num->size = 1;
+    num->words[0] = 0;
+    return num;
+}
+
+
 void
 bignum_resize(BigNum* num, size_t new_size, Arena *arena)
 {

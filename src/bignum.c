@@ -45,19 +45,23 @@ BigNum* bignum_new(Arena *arena)
 
     if(arena == NULL) {
         num = (BigNum*) malloc(sizeof(BigNum));
-        if(num == NULL) return NULL;
+        if(num == NULL)
+            return NULL;
 
         num->words = (BigNumWord*) calloc(size, sizeof(BigNumWord));
-        if(num->words == NULL) {
+        if(num->words == NULL){
             free(num);
             return NULL;
         }
+
     } else {
         num = (BigNum*) arena_alloc(arena, sizeof(BigNum));
-        if(num == NULL) return NULL;
+        if(num == NULL) 
+            return NULL;
 
         num->words = (BigNumWord*) arena_alloc(arena, size * sizeof(BigNumWord));
-        if(num->words == NULL) return NULL;
+        if(num->words == NULL) 
+            return NULL;
 
     }
 

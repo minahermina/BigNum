@@ -39,6 +39,7 @@ typedef struct {
 int dec_to_hex_string(const char *dec_str, char *hex_str, size_t hex_size);
 BigNum* bignum_new(Arena *arena);                                       /*done*/
 BigNum* bignum_zero(Arena *arena);                                       /*done*/
+int bignum_set_zero(BigNum *num);                                       /*done*/
 void bignum_resize(BigNum* num, size_t new_size, Arena *arena);          /*done*/
 int bignum_copy(BigNum *dest, BigNum *src, Arena *arena);               /*done*/
 BigNum* bignum_dup(BigNum *src, Arena *arena);                          /*done*/

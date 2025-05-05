@@ -38,7 +38,8 @@ void bignum_print_word(const BigNumWord word, char format){
 
 }
 
-BigNum* bignum_new(Arena *arena)
+BigNum*
+bignum_new(Arena *arena)
 {
     BigNum *num = NULL;
     size_t size = BIGNUM_DEFAULT_WORDS_SIZE;
@@ -65,7 +66,7 @@ BigNum* bignum_new(Arena *arena)
 
     }
 
-    num->size = 1;
+    num->size = 0;
     num->capacity = size;
     num->negative = 0;
 

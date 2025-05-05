@@ -380,41 +380,60 @@ bignum_print_words(const BigNum* num, char format)
     2 --> num1 = num2
 */
 int
-bignum_cmp(const BigNum *num1, const BigNum *num2)
+bignum_ucompare(const BigNum *num1, const BigNum *num2)
 {
     size_t i;
     assert(num1 != NULL || num2 != NULL);
 
-    /* (- & +) or ( + & -) */
-    if(bignum_is_negative(num1) != bignum_is_negative(num2)){
-        return bignum_is_negative(num1) ? 1 : 0;
-    }
-
-
     if(num1->size > num2->size){
-        return (bignum_is_negative(num1) ? 1: 0);
+        return 0;
     }
     else if(num1->size < num2->size){
-        return (bignum_is_negative(num1) ? 0: 1);
+        return  1;
     }
-    /* num1->size == num2->size */
-    else{
-        for(i = 0; i < num1->size; ++i){
-            if(num1->words[i] > num2->words[i]){
-                return (bignum_is_negative(num1) ? 1: 0);
-            }
 
-            if(num1->words[i] < num2->words[i]){
-                return (bignum_is_negative(num1) ? 0: 1);
-            }
+    /*num1->size == num2->size*/
+    for(i = 0; i < num1->size; ++i){
+        if(num1->words[i] > num2->words[i]){
+            return  0;
+        }
+
+        if(num1->words[i] < num2->words[i]){
+            return  1;
         }
     }
 
-    /* num1 == num2 */
     return 2;
 }
 
-/* int
+int
+bignum_compare(const BigNum *num1, const BigNum *num2)
+{
+    int ucompare_result;
+    assert(num1 != NULL && num2 != NULL);
+
+    /*signs differ*/
+    if (bignum_is_negative(num1) != bignum_is_negative(num2)) {
+        return bignum_is_negative(num1) ? 1 : 0;
+    }
+
+    ucompare_result = bignum_ucompare(num1, num2);
+
+    /* both signs are (-) */
+    if (bignum_is_negative(num1)) {
+        /* reverse ucompare_result */
+        if(ucompare_result == 0 ) return 1;
+        else if(ucompare_result == 1 ) return 0;
+    } 
+    /* both signs are (+) */
+    else {
+        return ucompare_result;
+    }
+
+    /* Both numbers are equal */
+    return 2;
+}
+
 int
 bignum_is_zero(const BigNum *num)
 {

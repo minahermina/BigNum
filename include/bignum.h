@@ -73,7 +73,8 @@ int bignum_xor(BigNum *dv, BigNum *rem, const BigNum *a, const BigNum *d, Arena 
 int bignum_mod_exp(BigNum *res, const BigNum *a, const BigNum *p, const BigNum *m, Arena *arena);
 int bignum_mod_inverse(BigNum *res, const BigNum *a, const BigNum *n, Arena *arena);
 
-int bignum_cmp(const BigNum *num1, const BigNum *num2);             /*done*/
+int bignum_compare(const BigNum *num1, const BigNum *num2);             /*done*/
+int bignum_ucompare(const BigNum *num1, const BigNum *num2);             /*done*/
 int bignum_is_zero(const BigNum *num);
 int bignum_is_one(const BigNum *num);
 int bignum_is_negative(const BigNum *num);                          /*done*/

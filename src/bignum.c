@@ -306,10 +306,10 @@ void bignum_print(BigNum* num, char format)
         /*bin format*/
         case 'b': {
             for (i = num->size - 1; i >= 0; i--) {
-                BigNumWord val = num->words[i];
+                val = num->words[i];
 
                 for (int byte = BIGNUM_WORD_SIZE/8 - 1; byte >= 0; byte--) {
-                    unsigned char current_byte = (val >> (byte * 8)) & 0xFF;
+                    current_byte = (val >> (byte * 8)) & 0xFF;
 
                     for (int bit = 7; bit >= 0; bit--) {
                         printf("%d", (current_byte >> bit) & 1);

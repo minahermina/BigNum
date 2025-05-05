@@ -341,11 +341,11 @@ void bignum_print(BigNum* num, char format)
 {
     assert(num != NULL);
     BigNumWord val;
-    int i;
+    unsigned char current_byte;
+    int i, byte, bit;
 
-    // Print sign if negative
-    if (num->negative) {
-        printf("(negative) ");
+    if (num->negative == 1) {
+        printf("(negative)\n");
     }
 
     switch(format){

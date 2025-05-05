@@ -368,17 +368,34 @@ bignum_cmp(const BigNum *num1, const BigNum *num2)
 {
     size_t i;
     assert(num1 != NULL || num2 != NULL);
-    if((num1->negative != num2->negative) || (num1->size != num2->size)){
-        return -1;
+
+    /* (- & +) or ( + & -) */
+    if(bignum_is_negative(num1) != bignum_is_negative(num2)){
+        return bignum_is_negative(num1) ? 1 : 0;
     }
 
-    for(i = 0; i < num1->size; ++i){
-        if(num1->words[i] != num2->words[i]){
-            return -1;
+
+    if(num1->size > num2->size){
+        return (bignum_is_negative(num1) ? 1: 0);
+    }
+    else if(num1->size < num2->size){
+        return (bignum_is_negative(num1) ? 0: 1);
+    }
+    /* num1->size == num2->size */
+    else{
+        for(i = 0; i < num1->size; ++i){
+            if(num1->words[i] > num2->words[i]){
+                return (bignum_is_negative(num1) ? 1: 0);
+            }
+
+            if(num1->words[i] < num2->words[i]){
+                return (bignum_is_negative(num1) ? 0: 1);
+            }
         }
     }
 
-    return 1;
+    /* num1 == num2 */
+    return 2;
 }
 
 /* int

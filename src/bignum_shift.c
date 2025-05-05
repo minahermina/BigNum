@@ -20,6 +20,16 @@
 #include <inttypes.h>
 #include <assert.h>
 
+
+
+/*
+set prev_msb = all zeros
+FOR from 0 to num's size
+    1- set word = num.words[0]
+    2- num.words[i] = nums.words[i] | with prev_msb
+    3- set prev_msb with nums.words[i]'s  for next loop
+*/
+
 BigNumWord
 bignum_lshift_word(BigNumWord word, size_t nbits)
 {
@@ -31,26 +41,6 @@ bignum_lshift_word(BigNumWord word, size_t nbits)
 
     return (word << nbits);
 }
-
-BigNumWord
-bignum_rshift_word(BigNumWord word, size_t nbits)
-{
-    if(nbits == 0)
-        return word;
-
-    if(nbits > BIGNUM_WORD_SIZE - 1)
-        return 0;
-
-    return (word >> nbits);
-}
-
-/*
-set prev_msb = all zeros
-FOR from 0 to num's size
-    1- set word = num.words[0]
-    2- num.words[i] = nums.words[i] | with prev_msb
-    3- set prev_msb with nums.words[i]'s  for next loop
-*/
 int
 bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena)
 {
@@ -91,6 +81,18 @@ bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena)
 }
 
 
+
+BigNumWord
+bignum_rshift_word(BigNumWord word, size_t nbits)
+{
+    if(nbits == 0)
+        return word;
+
+    if(nbits > BIGNUM_WORD_SIZE - 1)
+        return 0;
+
+    return (word >> nbits);
+}
 
 /* int
 bignum_rshift(BigNum *res, const BigNum *a, int nbits)

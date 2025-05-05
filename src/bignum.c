@@ -269,7 +269,7 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
             } else if (c >= 'A' && c <= 'F') {
                 value = c - 'A' + 10;
             } else { /*invalid char*/
-                bignum_free(num);
+                if(arena == NULL) bignum_free(num);
                 return NULL;
             }
 

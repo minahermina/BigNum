@@ -355,10 +355,10 @@ void bignum_print(BigNum* num, char format)
             for (i = num->size - 1; i >= 0; i--) {
                 val = num->words[i];
 
-                for (int byte = BIGNUM_WORD_SIZE/8 - 1; byte >= 0; byte--) {
+                for (byte = BIGNUM_WORD_SIZE/8 - 1; byte >= 0; byte--) {
                     current_byte = (val >> (byte * 8)) & 0xFF;
 
-                    for (int bit = 7; bit >= 0; bit--) {
+                    for (bit = 7; bit >= 0; bit--) {
                         printf("%d", (current_byte >> bit) & 1);
                     }
 
@@ -430,6 +430,7 @@ bignum_print_words(const BigNum* num, char format)
     1 --> num1 < num2
     2 --> num1 = num2
 */
+
 int
 bignum_ucompare(const BigNum *num1, const BigNum *num2)
 {

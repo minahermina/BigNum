@@ -394,7 +394,11 @@ bignum_print_words(const BigNum* num, char format)
 {
     assert(num != NULL);
     assert(format == 'b' || format == 'x');
-    size_t i;
+    size_t i = 0;
+
+    if (num->negative == 1) {
+        printf("(negative)\n");
+    }
 
     BigNumWord word = num->words[i];
     switch(format){

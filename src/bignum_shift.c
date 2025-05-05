@@ -8,7 +8,22 @@ bignum_lshift_word(BigNumWord word, size_t nbits)
     if(nbits == 0)
         return word;
 
+    if(nbits > BIGNUM_WORD_SIZE - 1)
+        return 0;
+
     return (word << nbits);
+}
+
+BigNumWord
+bignum_rshift_word(BigNumWord word, size_t nbits)
+{
+    if(nbits == 0)
+        return word;
+
+    if(nbits > BIGNUM_WORD_SIZE - 1)
+        return 0;
+
+    return (word >> nbits);
 }
 
 /*

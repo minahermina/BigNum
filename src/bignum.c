@@ -97,6 +97,9 @@ bignum_zero(Arena *arena)
     BigNum *num;
 
     num = bignum_new(arena);
+    if(num == NULL){
+        fprintf(stderr, "Error allocating memory\n");
+        return NULL;
 
     num->size = 1;
     num->words[0] = 0;
@@ -258,15 +261,13 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
 {
     BigNum *num = bignum_new(arena);
 
-    if(num == NULL){
-        fprintf(stderr, "Error allocating memory\n");
+    if(num == NULL || str == NULL){
+        fprintf(stderr, "error\n");
         return NULL;
     }
 
     size_t start_idx = 0, chars_per_word, word_idx, words_size, i, j;
     BigNumWord current_word, value;
-    assert(str != NULL);
-    assert(num != NULL);
 
     // Handle sign
     if (str[0] == '-') {

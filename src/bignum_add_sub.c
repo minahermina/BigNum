@@ -92,14 +92,14 @@ bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
          */
         if(compare_result == 0) {
             res->negative = 1;
-            // ret = bignum_usubtract(res, num1, num2, arena);
+            ret = bignum_usubtract(res, num1, num2, arena);
         } 
         /*
          * num1 < num2
          * - > +
          */
         else if(compare_result == 1) {
-            // ret = bignum_usubtract(res, num2, num1, arena);
+            ret = bignum_usubtract(res, num2, num1, arena);
             res->negative = 1;
         } 
         /*

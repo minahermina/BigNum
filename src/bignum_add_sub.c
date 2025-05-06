@@ -125,7 +125,7 @@ bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *are
 
     /*check for num1 > num2*/
     cmp = bignum_ucompare(num1, num2);
-    if (cmp == 2){
+    if (cmp == 1){
         return -1;
     }
 

@@ -113,7 +113,7 @@ bignum_set_zero(BigNum *num)
     assert(num != NULL);
 
     if(num->capacity > 0) {
-        num->size = 0;
+        num->size = 1;
         num->negative = 0;
         num->words[0] = 0;
         return 0;

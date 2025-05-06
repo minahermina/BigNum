@@ -109,6 +109,7 @@ bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
          */
         else{
             ret = bignum_set_zero(res);
+            res->negative = 0;
         }
     }
 

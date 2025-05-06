@@ -47,7 +47,7 @@ bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena)
     BigNumWord word, prev_msb;
     size_t i, shift_bits, word_prepend_count;
 
-    assert(res != NULL || num != NULL );
+    assert(res != NULL && num != NULL );
     /*no shifting needed*/
     if(nbits == 0)
         return 0;

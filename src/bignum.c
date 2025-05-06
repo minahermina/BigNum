@@ -431,7 +431,7 @@ int
 bignum_ucompare(const BigNum *num1, const BigNum *num2)
 {
     size_t i;
-    assert(num1 != NULL || num2 != NULL);
+    assert(num1 != NULL && num2 != NULL);
 
     if(num1->size > num2->size){
         return 0;

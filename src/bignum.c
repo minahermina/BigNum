@@ -1,19 +1,19 @@
 /*
-Copyright (C) 2025  Mina Albert Saeed mina.albert.saeed@gmail.com
+    Copyright (C) 2025  Mina Albert Saeed mina.albert.saeed@gmail.com
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #define ARENA_ALLOCATOR_IMPLEMENTATION
@@ -100,6 +100,7 @@ bignum_zero(Arena *arena)
     if(num == NULL){
         fprintf(stderr, "Error allocating memory\n");
         return NULL;
+    }
 
     num->size = 1;
     num->words[0] = 0;
@@ -331,11 +332,6 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
     return num;
 }
 
-
-
-/* int bignum_and(BigNum *res, const BigNum *a, const BigNum *b, Arena *arena);
-int bignum_or(BigNum *dv, BigNum *rem, const BigNum *a, const BigNum *d, Arena *arena);
-int bignum_xor(BigNum *dv, BigNum *rem, const BigNum *a, const BigNum *d, Arena *arena);  */
 
 /*prints number in Big-endian from highest word (MSB) to lowest word (LSB)*/
 void bignum_print(BigNum* num, char format)

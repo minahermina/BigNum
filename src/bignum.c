@@ -123,12 +123,12 @@ bignum_set_zero(BigNum *num)
 }
 
 void
-bignum_resize(BigNum* num, size_t new_size, Arena *arena)
+bignum_resize(BigNum* num, size_t newsize, Arena *arena)
 {
     assert(num != NULL);
 
-    if (new_size >= num->capacity){
-        num->capacity = new_size * 2;
+    if (newsize >= num->capacity){
+        num->capacity = newsize * 2;
 
         if (arena == NULL) {
             num->words = (BigNumWord*) realloc(num->words, (num->capacity * sizeof(BigNumWord)));
@@ -138,7 +138,7 @@ bignum_resize(BigNum* num, size_t new_size, Arena *arena)
     }
 
     assert(num->words != NULL);
-    num->size = new_size;
+    num->size = newsize;
     return ;
 }
 

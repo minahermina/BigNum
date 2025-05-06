@@ -85,7 +85,7 @@ bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
         ret = bignum_uadd(res, num1, num2, arena);
         res->negative = num1->negative;
     } else{
-        compare_result = bignum_compare(num1, num2);
+        compare_result = bignum_ucompare(num1, num2);
         /*
          * num1 > num2
          * + > -

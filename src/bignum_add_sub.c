@@ -30,7 +30,7 @@ bignum_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
     size_t max_size, min_size, i;
     assert(res != NULL && num1 !=NULL && num2 != NULL);
 
-    /*swap to num1 with num2*/
+    /*swap num1 with num2*/
     if(num1->size < num2->size){
         temp = num1;
         num1 = num2;

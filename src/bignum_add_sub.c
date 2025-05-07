@@ -116,6 +116,7 @@ bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
     return ret;
 }
 
+/* The arena is unused here but retained for interface consistency. */
 int
 bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {

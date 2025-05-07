@@ -11,6 +11,7 @@ SHARED_LIB_EXT = so
 SHARED_LIB_FLAGS = -shared -fPIC
 
 SRC_FILES = \
+	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/bignum.c \
 	$(SRC_DIR)/bignum_bitwise.c \
 	$(SRC_DIR)/bignum_add_sub.c \

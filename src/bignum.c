@@ -18,9 +18,11 @@
 
 #define ARENA_ALLOCATOR_IMPLEMENTATION
 #include <bignum.h>
+#include <utils.h>
 
 #include <inttypes.h>
 #include <assert.h>
+#include <string.h>
 
 #define ABS(x) (x < 0 ? -x : x)
 
@@ -254,6 +256,41 @@ bignum_from_int(int n, Arena* arena)
     n = ABS(n);
     bignum_resize(num, 1, arena);
     num->words[0] = n;
+    return num;
+}
+
+
+BigNum*
+bignum_from_bin(const char *str, size_t len, Arena* arena)
+{
+    BigNum *num;
+    const char *hex_str;
+
+    assert(str != NULL && len != 0);
+
+    hex_str = bin_to_hex(str, len);
+    assert(hex_str != NULL);
+
+    num = bignum_from_hex(hex_str, strlen(hex_str), arena);
+
+    return num;
+}
+
+
+BigNum*
+bignum_from_dec(const char *str, size_t len, Arena* arena)
+{
+    BigNum *num;
+    const char *hex_str;
+
+    assert(str != NULL && len != 0);
+
+    hex_str = dec_to_hex(str, len);
+    assert(hex_str != NULL);
+
+    num = bignum_from_hex(hex_str, strlen(hex_str), arena);
+
+
     return num;
 }
 

@@ -29,7 +29,7 @@ main(){
     bignum_print_words(res, 'x');
     printf("\n");
 
-    if(bignum_cmp(res, num2) < 0){
+    if(bignum_compare(res, num2) < 0){
         printf("error");
     }
 

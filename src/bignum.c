@@ -24,6 +24,15 @@
 #include <assert.h>
 #include <string.h>
 
+
+#define MUST(condition, message) \
+    do { \
+        if (!(condition)) { \
+            fprintf(stderr, "Error: %s\n", (message)); \
+            assert(condition); \
+        } \
+    } while (0)
+
 #define ABS(x) (x < 0 ? -x : x)
 
 void bignum_print_word(const BigNumWord word, char format){
@@ -53,7 +62,6 @@ void bignum_print_word(const BigNumWord word, char format){
         default: 
             fprintf(stderr, "this format char is not supported");
             break;
-
     }
 
 }
@@ -99,10 +107,8 @@ bignum_zero(Arena *arena)
     BigNum *num;
 
     num = bignum_new(arena);
-    if(num == NULL){
-        fprintf(stderr, "Error allocating memory\n");
-        return NULL;
-    }
+
+    MUST(num != NULL, "num pointer is NULL in bignum_zero");
 
     num->size = 1;
     num->words[0] = 0;
@@ -112,7 +118,7 @@ bignum_zero(Arena *arena)
 int
 bignum_set_zero(BigNum *num)
 {
-    assert(num != NULL);
+    MUST(num != NULL, "num pointer is NULL in bignum_set_zero");
 
     if(num->capacity > 0) {
         num->size = 1;
@@ -171,10 +177,7 @@ bignum_dup(BigNum *src, Arena *arena)
     /*create new BigNum num*/
     num = bignum_new(arena);
 
-    if(num == NULL){
-        fprintf(stderr, "Error allocating memory\n");
-        return NULL;
-    }
+    MUST(num != NULL, "Allocating memory in bignum_dup");
 
     /*copy from src to num]*/
     if(bignum_copy(num, src, arena) < 0){
@@ -245,10 +248,7 @@ bignum_from_int(int n, Arena* arena)
 {
     BigNum *num = bignum_new(arena);
 
-    if(num == NULL){
-        fprintf(stderr, "Error allocating memory\n");
-        return NULL;
-    }
+    MUST(num != NULL, "Allocating memory in bignum_from_int");
 
     if(ABS(n) != n)
         num->negative = 1;
@@ -299,10 +299,8 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
 {
     BigNum *num = bignum_new(arena);
 
-    if(num == NULL || str == NULL){
-        fprintf(stderr, "error\n");
-        return NULL;
-    }
+    MUST(num != NULL, "Allocating memory in bignum_from_hex");
+    MUST(str != NULL, "str pointer is NULL in bignum_from_hex");
 
     size_t start_idx = 0, chars_per_word, word_idx, words_size, i, j;
     BigNumWord current_word, value;

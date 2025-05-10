@@ -560,7 +560,10 @@ bignum_num_bits(const BigNum *num)
     size_t top_index;
     BigNumWord top_word;
     int bits;
-    if (num == NULL || bignum_is_zero(num)) {
+
+    MUST(num != NULL, "num pointer is NULL in bignum_num_bits");
+
+    if (bignum_is_zero(num)) {
         return 0;
     }
 
@@ -576,15 +579,13 @@ int
 bignum_num_bytes(const BigNum *num)
 {
     size_t bits;
-    if(num == NULL){
-        return -1;
-    }
+    MUST(num != NULL, "num pointer is NULL in bignum_num_bytes");
 
     if(bignum_is_zero(num)){
         return 0;
     }
-    bits = bignum_num_bits(num);
 
+    bits = bignum_num_bits(num);
     return (bits  + 7) / 8;
 }
 
@@ -601,9 +602,6 @@ static int
 bignum_get_indices(const BigNum *num, int n, size_t *word_idx, size_t *bit_idx)
 {
     int bits;
-    if (num == NULL) {
-        return -1;
-    }
 
     bits = bignum_num_bits(num);
     if (n < 0 || n > bits) {
@@ -619,6 +617,8 @@ int
 bignum_set_bit(BigNum *num, int n)
 {
     size_t word_idx, bit_idx;
+    MUST(num != NULL, "num pointer is NULL in bignum_set_bit");
+
     if (bignum_get_indices(num, n, &word_idx, &bit_idx) != 0) {
         return -1;
     }
@@ -631,6 +631,7 @@ int
 bignum_unset_bit(BigNum *num, int n)
 {
     size_t word_idx, bit_idx;
+    MUST(num != NULL, "num pointer is NULL in bignum_unset_bit");
     if (bignum_get_indices(num, n, &word_idx, &bit_idx) != 0) {
         return -1;
     }
@@ -643,9 +644,10 @@ int
 bignum_is_bit_set(const BigNum *num, int n)
 {
     size_t word_idx, bit_idx;
+    MUST(num != NULL, "num pointer is NULL in bignum_is_bit_set");
+
     if (bignum_get_indices(num, n, &word_idx, &bit_idx) != 0) {
         return -1;
     }
-
     return (num->words[word_idx] & ((BigNumWord)1 << bit_idx)) ? 1 : 0;
 }

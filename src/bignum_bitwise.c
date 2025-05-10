@@ -17,6 +17,7 @@
 */
 
 #include <bignum.h>
+#include <utils.h>
 #include <inttypes.h>
 #include <assert.h>
 

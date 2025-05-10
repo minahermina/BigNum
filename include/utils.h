@@ -20,6 +20,14 @@
 #define BIGUM_UTILS
 #include <stdlib.h>
 
+#define MUST(condition, message) \
+    do { \
+        if (!(condition)) { \
+            fprintf(stderr, "Error: %s\n", (message)); \
+            assert(condition); \
+        } \
+    } while (0)
+
 char* dec_to_hex(const char* str, size_t len);
 char* bin_to_hex(const char* str, size_t len);
 

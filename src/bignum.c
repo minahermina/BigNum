@@ -25,14 +25,6 @@
 #include <string.h>
 
 
-#define MUST(condition, message) \
-    do { \
-        if (!(condition)) { \
-            fprintf(stderr, "Error: %s\n", (message)); \
-            assert(condition); \
-        } \
-    } while (0)
-
 #define ABS(x) (x < 0 ? -x : x)
 
 void bignum_print_word(const BigNumWord word, char format){

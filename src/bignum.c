@@ -133,7 +133,7 @@ bignum_set_zero(BigNum *num)
 void
 bignum_resize(BigNum* num, size_t newsize, Arena *arena)
 {
-    assert(num != NULL);
+    MUST(num != NULL, "num pointer is NULL in bignum_resize");
 
     if (newsize >= num->capacity){
         num->capacity = newsize * 2;
@@ -154,8 +154,8 @@ int
 bignum_copy(BigNum *dest, BigNum *src, Arena *arena)
 {
     size_t i;
-    assert(dest != NULL);
-    assert(src != NULL);
+    MUST(dest != NULL, "dest pointer is NULL in bignum_copy");
+    MUST(src != NULL, "src pointer is NULL in bignum_copy");
 
     bignum_resize(dest, src->size, arena);
 
@@ -172,7 +172,7 @@ BigNum*
 bignum_dup(BigNum *src, Arena *arena)
 {
     BigNum *num = NULL;
-    assert(src != NULL);
+    MUST(src != NULL, "src pointer is NULL in bignum_dup");
 
     /*create new BigNum num*/
     num = bignum_new(arena);
@@ -190,8 +190,8 @@ bignum_dup(BigNum *src, Arena *arena)
 void
 bignum_free(BigNum *num)
 {
-    assert(num != NULL);
-    assert(num->words != NULL);
+    MUST(num != NULL, "num pointer is NULL in bignum_free");
+    MUST(num->words != NULL, "num->words pointer is NULL in bignum_free");
 
     free(num->words);
     free(num);
@@ -202,7 +202,7 @@ bignum_append_word(BigNum *num, const BigNumWord word, Arena *arena)
 {
     size_t oldsize;
 
-    assert(num != NULL);
+    MUST(num != NULL, "num pointer is NULL in bignum_append_word");
 
     if(word == 0)
         return 0;
@@ -266,7 +266,8 @@ bignum_from_bin(const char *str, size_t len, Arena* arena)
     BigNum *num;
     const char *hex_str;
 
-    assert(str != NULL && len != 0);
+    MUST(str != NULL, "str pointer is NULL in bignum_from_bin");
+    MUST(len != 0, "len is 0 in bignum_from_bin");
 
     hex_str = bin_to_hex(str, len);
     assert(hex_str != NULL);
@@ -283,7 +284,8 @@ bignum_from_dec(const char *str, size_t len, Arena* arena)
     BigNum *num;
     const char *hex_str;
 
-    assert(str != NULL && len != 0);
+    MUST(str != NULL, "str pointer is NULL in bignum_from_dec");
+    MUST(len != 0, "len is 0 in bignum_from_dec");
 
     hex_str = dec_to_hex(str, len);
     assert(hex_str != NULL);
@@ -371,7 +373,7 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
 /*prints number in Big-endian from highest word (MSB) to lowest word (LSB)*/
 void bignum_print(BigNum* num, char format)
 {
-    assert(num != NULL);
+    MUST(num != NULL, "num pointer is NULL in bignum_print");
     BigNumWord val;
     unsigned char current_byte;
     int i, byte, bit;
@@ -423,8 +425,8 @@ void bignum_print(BigNum* num, char format)
 void
 bignum_print_words(const BigNum* num, char format)
 {
-    assert(num != NULL);
-    assert(format == 'b' || format == 'x');
+    MUST(num != NULL, "num pointer is NULL in bignum_print_words");
+    MUST(format == 'b' || format == 'x', "format is not \'b\' neither \'x\' in bignum_print_words");
     size_t i = 0;
 
     if (num->negative == 1) {
@@ -466,7 +468,8 @@ int
 bignum_ucompare(const BigNum *num1, const BigNum *num2)
 {
     size_t i;
-    assert(num1 != NULL && num2 != NULL);
+    MUST(num1 != NULL, "num1 pointer is NULL in bignum_ucompare");
+    MUST(num2 != NULL, "num2 pointer is NULL in bignum_ucompare");
 
     if(num1->size > num2->size){
         return 0;
@@ -493,7 +496,9 @@ int
 bignum_compare(const BigNum *num1, const BigNum *num2)
 {
     int ucompare_result;
-    assert(num1 != NULL && num2 != NULL);
+
+    MUST(num1 != NULL, "num1 pointer is NULL in bignum_compare");
+    MUST(num2 != NULL, "num2 pointer is NULL in bignum_compare");
 
     /*signs differ*/
     if (bignum_is_negative(num1) != bignum_is_negative(num2)) {
@@ -520,7 +525,7 @@ bignum_compare(const BigNum *num1, const BigNum *num2)
 int
 bignum_is_zero(const BigNum *num)
 {
-    assert(num != NULL);
+    MUST(num != NULL, "num pointer is NULL in bignum_is_zero");
 
     if(num->size == 1){
         return (num->words[0] == 0);
@@ -532,7 +537,7 @@ bignum_is_zero(const BigNum *num)
 int
 bignum_is_one(const BigNum *num)
 {
-    assert(num != NULL);
+    MUST(num != NULL, "num pointer is NULL in bignum_is_one");
 
     if(num->size == 1){
         return (num->words[0] == 1);

@@ -598,3 +598,64 @@ bignum_is_negative(const BigNum *num)
 {
     return num->negative;
 }
+
+/*these set_bit & unset_bit & is_bit_set functions' code can be more organized! */
+int
+bignum_set_bit(BigNum *num, int n)
+{
+    int bits;
+    size_t word_index, bit_index;
+    if(num == NULL){
+        return -1;
+    }
+
+    bits = bignum_num_bits(num);
+    if(n < 0  || n > bits){
+        return -1;
+    }
+
+    word_index = n / BIGNUM_WORD_SIZE;
+    bit_index = n % BIGNUM_WORD_SIZE;
+
+    num->words[word_index] |= ((BigNumWord)1 << bit_index);
+}
+
+int
+bignum_unset_bit(BigNum *num, int n)
+{
+    int bits;
+    size_t word_index, bit_index;
+    if(num == NULL){
+        return -1;
+    }
+
+    bits = bignum_num_bits(num);
+    if(n < 0  || n > bits){
+        return -1;
+    }
+
+    word_index = n / BIGNUM_WORD_SIZE;
+    bit_index = n % BIGNUM_WORD_SIZE;
+
+    num->words[word_index] &= ~((BigNumWord)1 << bit_index);
+}
+
+int
+bignum_is_bit_set(const BigNum *num, int n)
+{
+    int bits;
+    size_t word_index, bit_index;
+    if(num == NULL){
+        return -1;
+    }
+
+    bits = bignum_num_bits(num);
+    if(n < 0  || n > bits){
+        return -1;
+    }
+
+    word_index = n / BIGNUM_WORD_SIZE;
+    bit_index = n % BIGNUM_WORD_SIZE;
+
+    return num->words[word_index] & ((BigNumWord)1 << bit_index) ? 1: 0;
+}

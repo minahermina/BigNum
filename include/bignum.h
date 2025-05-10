@@ -108,5 +108,8 @@ int bignum_num_bits_word(BigNumWord word);                                      
 int bignum_num_bits(const BigNum *num);                                                                 /*done*/
 int bignum_num_bytes(const BigNum *num);                                                                /*done*/
 int bignum_is_negative(const BigNum *num);                                                              /*done*/
+int bignum_set_bit(BigNum *num, int n);                                                                 /*done*/
+int bignum_unset_bit(BigNum *num, int n);                                                               /*done*/
+int bignum_is_bit_set(const BigNum *num, int n);                                                        /*done*/
 
 #endif /*BigNum*/

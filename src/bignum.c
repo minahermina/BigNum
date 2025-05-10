@@ -602,63 +602,58 @@ bignum_is_negative(const BigNum *num)
     return num->negative;
 }
 
-/*these set_bit & unset_bit & is_bit_set functions' code can be more organized! */
-int
-bignum_set_bit(BigNum *num, int n)
+/**
+ * Helper function to validate inputs and calc word and bit indices.
+ */
+static int
+bignum_get_indices(const BigNum *num, int n, size_t *word_idx, size_t *bit_idx)
 {
     int bits;
-    size_t word_index, bit_index;
-    if(num == NULL){
+    if (num == NULL) {
         return -1;
     }
 
     bits = bignum_num_bits(num);
-    if(n < 0  || n > bits){
+    if (n < 0 || n > bits) {
         return -1;
     }
 
-    word_index = n / BIGNUM_WORD_SIZE;
-    bit_index = n % BIGNUM_WORD_SIZE;
+    *word_idx = n / BIGNUM_WORD_SIZE;
+    *bit_idx = n % BIGNUM_WORD_SIZE;
+    return 0;
+}
 
-    num->words[word_index] |= ((BigNumWord)1 << bit_index);
+int
+bignum_set_bit(BigNum *num, int n)
+{
+    size_t word_idx, bit_idx;
+    if (bignum_get_indices(num, n, &word_idx, &bit_idx) != 0) {
+        return -1;
+    }
+
+    num->words[word_idx] |= ((BigNumWord)1 << bit_idx);
+    return 0;
 }
 
 int
 bignum_unset_bit(BigNum *num, int n)
 {
-    int bits;
-    size_t word_index, bit_index;
-    if(num == NULL){
+    size_t word_idx, bit_idx;
+    if (bignum_get_indices(num, n, &word_idx, &bit_idx) != 0) {
         return -1;
     }
 
-    bits = bignum_num_bits(num);
-    if(n < 0  || n > bits){
-        return -1;
-    }
-
-    word_index = n / BIGNUM_WORD_SIZE;
-    bit_index = n % BIGNUM_WORD_SIZE;
-
-    num->words[word_index] &= ~((BigNumWord)1 << bit_index);
+    num->words[word_idx] &= ~((BigNumWord)1 << bit_idx);
+    return 0;
 }
 
 int
 bignum_is_bit_set(const BigNum *num, int n)
 {
-    int bits;
-    size_t word_index, bit_index;
-    if(num == NULL){
+    size_t word_idx, bit_idx;
+    if (bignum_get_indices(num, n, &word_idx, &bit_idx) != 0) {
         return -1;
     }
 
-    bits = bignum_num_bits(num);
-    if(n < 0  || n > bits){
-        return -1;
-    }
-
-    word_index = n / BIGNUM_WORD_SIZE;
-    bit_index = n % BIGNUM_WORD_SIZE;
-
-    return num->words[word_index] & ((BigNumWord)1 << bit_index) ? 1: 0;
+    return (num->words[word_idx] & ((BigNumWord)1 << bit_idx)) ? 1 : 0;
 }

@@ -28,7 +28,9 @@ bignum_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
     BigNumWord carry, sum, a;
     const BigNum *temp;
     size_t max_size, min_size, i;
-    assert(res != NULL && num1 !=NULL && num2 != NULL);
+    MUST(res  != NULL, "res pointer is NULL in bignum_uadd");
+    MUST(num1 != NULL, "num1 pointer is NULL in bignum_uadd");
+    MUST(num2 != NULL, "num2 pointer is NULL in bignum_uadd");
 
     /*swap num1 with num2*/
     if(num1->size < num2->size){
@@ -79,7 +81,10 @@ int
 bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
     int compare_result, ret;
-    assert(res != NULL && num1 !=NULL && num2 != NULL);
+    MUST(res  != NULL, "res pointer is NULL in bignum_add");
+    MUST(num1 != NULL, "num1 pointer is NULL in bignum_add");
+    MUST(num2 != NULL, "num2 pointer is NULL in bignum_add");
+
 
     if(bignum_is_negative(num1) == bignum_is_negative(num2)){
         ret = bignum_uadd(res, num1, num2, arena);
@@ -120,9 +125,12 @@ bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 int
 bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
+    (void)arena;
     size_t i;
     BigNumWord a, b, diff, borrow, cmp;
-    assert(res != NULL && num1 != NULL && num2 != NULL);
+    MUST(res  != NULL, "res pointer is NULL in bignum_usubtract");
+    MUST(num1 != NULL, "num1 pointer is NULL in bignum_usubtract");
+    MUST(num2 != NULL, "num2 pointer is NULL in bignum_usubtract");
 
     /*check for num1 > num2*/
     cmp = bignum_ucompare(num1, num2);
@@ -156,7 +164,9 @@ int
 bignum_subtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
     int compare_result, ret;
-    assert(res != NULL && num1 !=NULL && num2 != NULL);
+    MUST(res  != NULL, "res pointer is NULL in bignum_subtract");
+    MUST(num1 != NULL, "num1 pointer is NULL in bignum_subtract");
+    MUST(num2 != NULL, "num2 pointer is NULL in bignum_subtract");
 
     /*
      * +num1 - -num2 =  num1 + num2;

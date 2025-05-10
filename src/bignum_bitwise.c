@@ -47,7 +47,9 @@ bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena)
     BigNumWord word, prev_msb;
     size_t i, shift_bits, word_prepend_count;
 
-    assert(res != NULL && num != NULL );
+    MUST(res != NULL, "res pointer is NULL in bignum_lshift");
+    MUST(num != NULL, "num pointer is NULL in bignum_lshift");
+
     /*no shifting needed*/
     if(nbits == 0)
         return 0;
@@ -108,7 +110,7 @@ BigNumWord
 bignum_and_or_xor_word(BigNumWord word1, BigNumWord word2, int op)
 {
     assert(op == 0 || op == 1 || op == 2);
-    BigNumWord res;
+    BigNumWord res = 0;
     switch(op){
         case 0:
             res = word1 & word2;
@@ -159,7 +161,10 @@ bignum_and_or_xor(BigNum *res, const BigNum *num1, const BigNum *num2, int op, A
 int
 bignum_and(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
-    assert(res != NULL && num1 != NULL && num2 != NULL);
+    MUST(res != NULL, "res pointer is NULL in bignum_and");
+    MUST(num1 != NULL, "num pointer is NULL in bignum_and");
+    MUST(num2 != NULL, "num pointer is NULL in bignum_and");
+
     bignum_and_or_xor(res, num1, num2, 0, arena);
     return 1;
 }
@@ -167,7 +172,10 @@ bignum_and(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 int
 bignum_or(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
-    assert(res != NULL && num1 != NULL && num2 != NULL);
+    MUST(res != NULL, "res pointer is NULL in bignum_or");
+    MUST(num1 != NULL, "num pointer is NULL in bignum_or");
+    MUST(num2 != NULL, "num pointer is NULL in bignum_or");
+
     bignum_and_or_xor(res, num1, num2, 1, arena);
     return 1;
 }
@@ -175,7 +183,10 @@ bignum_or(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 int
 bignum_xor(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
-    assert(res != NULL && num1 != NULL && num2 != NULL);
+    MUST(res != NULL, "res pointer is NULL in bignum_xor");
+    MUST(num1 != NULL, "num pointer is NULL in bignum_xor");
+    MUST(num2 != NULL, "num pointer is NULL in bignum_xor");
+
     bignum_and_or_xor(res, num1, num2, 2, arena);
     return 1;
 }

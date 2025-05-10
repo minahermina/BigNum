@@ -544,6 +544,56 @@ bignum_is_one(const BigNum *num)
 }
 
 int
+bignum_num_bits_word(BigNumWord word)
+{
+    int bits;
+    if(word == 0){
+        return 0;
+    }
+
+    bits = 0;
+    while(word > 0){
+        bits++;
+        word >>= 1;
+    }
+    return bits;
+}
+
+int
+bignum_num_bits(const BigNum *num)
+{
+    size_t top_index;
+    BigNumWord top_word;
+    int bits;
+    if (num == NULL || bignum_is_zero(num)) {
+        return 0;
+    }
+
+    top_index = num->size - 1;
+    top_word = num->words[top_index];
+
+    bits = bignum_num_bits_word(top_word);
+
+    return bits + (top_index * BIGNUM_WORD_SIZE);
+}
+
+int
+bignum_num_bytes(const BigNum *num)
+{
+    size_t bits;
+    if(num == NULL){
+        return -1;
+    }
+
+    if(bignum_is_zero(num)){
+        return 0;
+    }
+    bits = bignum_num_bits(num);
+
+    return (bits  + 7) / 8;
+}
+
+int
 bignum_is_negative(const BigNum *num)
 {
     return num->negative;

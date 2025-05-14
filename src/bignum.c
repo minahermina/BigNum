@@ -632,6 +632,7 @@ bignum_unset_bit(BigNum *num, int n)
 {
     size_t word_idx, bit_idx;
     MUST(num != NULL, "num pointer is NULL in bignum_unset_bit");
+
     if (bignum_get_indices(num, n, &word_idx, &bit_idx) != 0) {
         return -1;
     }

@@ -15,6 +15,7 @@ SRC_FILES = \
 	$(SRC_DIR)/bignum.c \
 	$(SRC_DIR)/bignum_bitwise.c \
 	$(SRC_DIR)/bignum_add_sub.c \
+	$(SRC_DIR)/bignum_mul_div_mod.c
 #	$(SRC_DIR)/bignum_div.c
 
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC_FILES))

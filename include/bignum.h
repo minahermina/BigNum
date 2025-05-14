@@ -104,6 +104,7 @@ int bignum_compare(const BigNum *num1, const BigNum *num2);                     
 int bignum_ucompare(const BigNum *num1, const BigNum *num2);                                            /*done*/
 int bignum_is_zero(const BigNum *num);                                                                  /*done*/
 int bignum_is_one(const BigNum *num);                                                                   /*done*/
+
 int bignum_num_bits_word(BigNumWord word);                                                              /*done*/
 int bignum_num_bits(const BigNum *num);                                                                 /*done*/
 int bignum_num_bytes(const BigNum *num);                                                                /*done*/

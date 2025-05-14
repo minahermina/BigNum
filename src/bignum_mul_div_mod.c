@@ -28,7 +28,7 @@
 int bignum_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
     int i, num1_bit_len;
-    BigNum *temp, *temp_res;
+    BigNum *temp;
     MUST(res != NULL, "res pointer is NULL in bignum_mul");
     MUST(num1 != NULL, "num1 pointer is NULL in bignum_mul");
     MUST(num2 != NULL, "num2 pointer is NULL in bignum_mul");
@@ -44,35 +44,30 @@ int bignum_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena
         return bignum_set_zero(res);
     }
 
-    /* temp_res for accumulation*/
-    temp_res = bignum_new(arena);
-    MUST(temp_res != NULL, "Failed to allocate temp_res in bignum_mul");
 
     /* temp for double operation*/
     temp = bignum_new(arena);
     MUST(temp != NULL, "Failed to allocate temp in bignum_mul");
 
-    bignum_set_zero(temp_res);
+    bignum_set_zero(res);
 
-    bignum_copy(temp_res, num2, arena);
+    bignum_copy(res, num2, arena);
 
     for (i = num1_bit_len - 2; i >= 0; i--) {
-        bignum_copy(temp, temp_res, arena);
+        bignum_copy(temp, res, arena);
 
-        /* Double the temp_res (shift left by 1) */
-        bignum_lshift(temp_res, temp, 1, arena);
+        /* Double the res (shift left by 1) */
+        bignum_lshift(res, temp, 1, arena);
 
-        /* if bit is set, add num2 to temp_res */
+        /* if bit is set, add num2 to res */
         if (bignum_is_bit_set(num1, i)) {
-            /* Copy temp_res to temp */
-            bignum_copy(temp, temp_res, arena);
+            /* Copy res to temp */
+            bignum_copy(temp, res, arena);
 
-            /* Add num2 to temp_res */
-            bignum_uadd(temp_res, temp, num2, arena);
+            /* Add num2 to res */
+            bignum_uadd(res, temp, num2, arena);
         }
     }
-
-    bignum_copy(res, temp_res, arena);
 
     /* Set the sign of the result */
     res->negative = (num1->negative != num2->negative) && !bignum_is_zero(res);

@@ -54,12 +54,11 @@ typedef struct {
 } BigNum;
 
 
-int dec_to_hex_string(const char *dec_str, char *hex_str, size_t hex_size);
 BigNum* bignum_new(Arena *arena);                                                                       /*done*/
 BigNum* bignum_zero(Arena *arena);                                                                      /*done*/
 int bignum_set_zero(BigNum *num);                                                                       /*done*/
 void bignum_resize(BigNum* num, size_t new_size, Arena *arena);                                         /*done*/
-int bignum_copy(BigNum *dest, BigNum *src, Arena *arena);                                               /*done*/
+int bignum_copy(BigNum *dest, const BigNum *src, Arena *arena);                                         /*done*/
 BigNum* bignum_dup(BigNum *src, Arena *arena);                                                          /*done*/
 int bignum_append_word(BigNum* num, const BigNumWord word, Arena *arena);                               /*done*/
 int bignum_prepend_zero_words(BigNum* num, size_t cnt , Arena *arena);                                  /*done*/
@@ -67,7 +66,7 @@ void bignum_print_words(const BigNum* num, char format);                        
 void bignum_print(BigNum* num, char format);                                                            /*done*/
 void bignum_free(BigNum *num);                                                                          /*done*/
 
-/*Conversion*/
+/* Conversion */
 int *bignum_bn2dec(const BigNum *num, char *dest, size_t len);
 int *bignum_bn2hex(const BigNum *num, char *dest, size_t len);
 int *bignum_bn2bin(const BigNum *num, char *dest, size_t len);
@@ -81,12 +80,12 @@ int bignum_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *aren
 int bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 int bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                /*done*/
 int bignum_subtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                 /*done*/
-int bignum_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
+int bignum_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 int bignum_div(BigNum *div, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
 int bignum_mod(BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
 int bignum_gcd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
 
-/*Bitwise Operation*/
+/* Bitwise Operation */
 BigNumWord bignum_lshift_word(BigNumWord word, size_t nbits);                                           /*done*/
 int bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena);                                /*done*/
 BigNumWord bignum_rshift_word(BigNumWord word, size_t nbits);                                           /*done*/

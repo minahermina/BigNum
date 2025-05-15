@@ -33,7 +33,7 @@ bignum_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
     MUST(num1 != NULL, "num1 pointer is NULL in bignum_uadd");
     MUST(num2 != NULL, "num2 pointer is NULL in bignum_uadd");
 
-    /*swap num1 with num2*/
+    /* swap num1 with num2 */
     if(num1->size < num2->size){
         temp = num1;
         num1 = num2;
@@ -58,7 +58,7 @@ bignum_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
     }
 
 
-    /*loop for remaining words in the larger number (num1)*/
+    /* loop for remaining words in the larger number (num1) */
     for (; i < max_size; i++) {
         a = (i < num1->size) ? num1->words[i] : 0;
         sum = a + carry;
@@ -133,7 +133,7 @@ bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *are
     MUST(num1 != NULL, "num1 pointer is NULL in bignum_usubtract");
     MUST(num2 != NULL, "num2 pointer is NULL in bignum_usubtract");
 
-    /*check for num1 > num2*/
+    /* check for num1 > num2 */
     cmp = bignum_ucompare(num1, num2);
     if (cmp == 1){
         return -1;
@@ -142,7 +142,7 @@ bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *are
     borrow = 0;
     for(i = 0; i < num1->size; ++i){
         a = num1->words[i];
-        b = (i < num2->size ? num2->words[i] : 0); /*as num1 is longer than num2*/
+        b = (i < num2->size ? num2->words[i] : 0); /* as num1 is longer than num2 */
 
         if(a < b + borrow){ /* borrow needed */
             diff = (a + BIGNUM_MASK1 + 1) - a - borrow;

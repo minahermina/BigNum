@@ -55,8 +55,9 @@ bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena)
     if(nbits == 0)
         return 0;
 
-    /* calc how many words may be needed to prepend if nbits >= BIGNUM_WORD_SIZE
-        and shift_bits to shift each word
+    /* 
+     * calc how many words may be needed to prepend if nbits >= BIGNUM_WORD_SIZE
+     * and shift_bits to shift each word
     */
     word_prepend_count = nbits / BIGNUM_WORD_SIZE;
     shift_bits         = nbits % BIGNUM_WORD_SIZE;
@@ -64,10 +65,10 @@ bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena)
     /*may be optimized !*/
     bignum_copy(res, num, arena);
 
-    prev_msb = 0; /*a mask with all zeros*/
-    /*nbits < 64 or < 32*/
+    prev_msb = 0; /* a mask with all zeros */
+    /* nbits < 64 or < 32 */
     if(shift_bits != 0){
-        for(i = 0; i < res->size; ++i){ // O(N)
+        for(i = 0; i < res->size; ++i){ /* O(N) */
             word = num->words[i];
             res->words[i] = bignum_lshift_word(word, shift_bits);
             res->words[i] |=  prev_msb;
@@ -119,7 +120,6 @@ bignum_and_or_xor_word(BigNumWord word1, BigNumWord word2, int op)
         case 1:
             res = word1 | word2;
             break;
-
         case 2:
             res = word1 ^ word2;
             break;
@@ -136,7 +136,7 @@ bignum_and_or_xor(BigNum *res, const BigNum *num1, const BigNum *num2, int op, A
     size_t i, max_size, min_size;
     const BigNum *temp;
 
-    /*swap num1 with num2*/
+    /* swap num1 with num2 */
     if(num1->size < num2->size){
         temp = num1;
         num1 = num2;

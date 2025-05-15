@@ -44,7 +44,6 @@ int bignum_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena
         return bignum_set_zero(res);
     }
 
-
     /* temp for double operation*/
     temp = bignum_new(arena);
     MUST(temp != NULL, "Failed to allocate temp in bignum_mul");

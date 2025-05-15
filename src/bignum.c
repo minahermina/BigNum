@@ -30,7 +30,7 @@
 void bignum_print_word(const BigNumWord word, char format){
 
     switch(format){
-        /*bin format*/
+        /* bin format */
         case 'b':{
             for (int byte = (BIGNUM_WORD_SIZE/8) - 1; byte >= 0; byte--) {
                 unsigned char current_byte = (word >> (byte * 8)) & 0xFF;
@@ -42,7 +42,7 @@ void bignum_print_word(const BigNumWord word, char format){
             printf("\n");
             break;
         }
-        /*hex format*/
+        /* hex format */
         case 'x':{
                 #if BIGNUM_WORD_SIZE == 64
                     printf("0x%016" PRIX64 "\n", word);
@@ -143,7 +143,7 @@ bignum_resize(BigNum* num, size_t newsize, Arena *arena)
 }
 
 int
-bignum_copy(BigNum *dest, BigNum *src, Arena *arena)
+bignum_copy(BigNum *dest, const BigNum *src, Arena *arena)
 {
     size_t i;
     MUST(dest != NULL, "dest pointer is NULL in bignum_copy");
@@ -166,12 +166,12 @@ bignum_dup(BigNum *src, Arena *arena)
     BigNum *num = NULL;
     MUST(src != NULL, "src pointer is NULL in bignum_dup");
 
-    /*create new BigNum num*/
+    /* create new BigNum num */
     num = bignum_new(arena);
 
     MUST(num != NULL, "Allocating memory in bignum_dup");
 
-    /*copy from src to num]*/
+    /* copy from src to num */
     if(bignum_copy(num, src, arena) < 0){
         return NULL;
     }
@@ -204,7 +204,7 @@ bignum_append_word(BigNum *num, const BigNumWord word, Arena *arena)
 
     assert(num->words != NULL);
 
-    // Append the new word
+    /* Append the new word */
     num->words[oldsize] = word;
 
     return 0;
@@ -223,12 +223,12 @@ bignum_prepend_zero_words(BigNum *num, size_t cnt, Arena *arena)
 
     bignum_resize(num, oldsize + cnt, arena);
 
-    //shift from back to front to avoid overwriting
+    /* shift from back to front to avoid overwriting */
     for (i = oldsize; i > 0; i--) {
         num->words[i + cnt - 1] = num->words[i - 1];
     }
 
-    // Zero out the prepended cnt words
+    /* Zero out the prepended cnt words */
     for (i = 0; i < cnt; i++) {
         num->words[i] = 0;
     }
@@ -299,43 +299,43 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
     size_t start_idx = 0, chars_per_word, word_idx, words_size, i, j;
     BigNumWord current_word, value;
 
-    // Handle sign
+    /* Handle sign */
     if (str[0] == '-') {
         num->negative = 1;
         start_idx = 1;
     }
 
-    // Handle '0x' or '0X' prefix
+    /* Handle '0x' or '0X' prefix */
     if (len > start_idx + 1 && str[start_idx] == '0' && 
         (str[start_idx + 1] == 'x' || str[start_idx + 1] == 'X')) {
         start_idx += 2;
     }
 
-    // Skip leading zeros
+    /* Skip leading zeros */
     while (start_idx < len && str[start_idx] == '0') {
         start_idx++;
     }
 
-    // If all zeros or empty, return 0
+    /* If all zeros or empty, return 0 */
     if (start_idx >= len) {
         num->size = 1;
         num->words[0] = 0;
         return num;
     }
 
-    chars_per_word = BIGNUM_WORD_SIZE / 4; // 16 for 64-bit, 8 for 32-bit
+    chars_per_word = BIGNUM_WORD_SIZE / 4; /* 16 for 64-bit, 8 for 32-bit */
 
 
-    /*ensure we have enough words for the hex number  */
+    /* ensure we have enough words for the hex number */
     words_size = ((len * 4 ) / BIGNUM_WORD_SIZE) + 1;
     bignum_resize(num, words_size, arena);
 
     word_idx = 0;
-    // Start from the rightmost digit
+    /* Start from the rightmost digit */
     for (i = len; i > start_idx; word_idx++) {
         current_word = 0;
 
-        // Process up to chars_per_word characters curren_word (right -> left)
+        /* Process up to chars_per_word characters curren_word (right -> left) */
         for (j = 0; j < chars_per_word && i > start_idx; j++, i--) {
             char c = str[i-1];
 
@@ -350,7 +350,7 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
                 return NULL;
             }
 
-            // Add value at the position in the current word
+            /* Add value at the position in the current word */
             current_word |= value << (j * 4);
         }
 
@@ -362,7 +362,7 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
 }
 
 
-/*prints number in Big-endian from highest word (MSB) to lowest word (LSB)*/
+/* prints number in Big-endian from highest word (MSB) to lowest word (LSB)*/
 void bignum_print(BigNum* num, char format)
 {
     MUST(num != NULL, "num pointer is NULL in bignum_print");
@@ -375,7 +375,7 @@ void bignum_print(BigNum* num, char format)
     }
 
     switch(format){
-        /*bin format*/
+        /* bin format */
         case 'b': {
             for (i = num->size - 1; i >= 0; i--) {
                 val = num->words[i];
@@ -387,7 +387,7 @@ void bignum_print(BigNum* num, char format)
                         printf("%d", (current_byte >> bit) & 1);
                     }
 
-                    // space between bytes for readability
+                    /* space between bytes for readability */
                     if (byte > 0) printf(" ");
                 }
             }
@@ -395,7 +395,7 @@ void bignum_print(BigNum* num, char format)
             break;
         }
 
-        /*hex format*/
+        /* hex format */
         case 'x' :{
             printf("0x");
             for (i = num->size - 1; i >= 0; i--) {
@@ -413,7 +413,7 @@ void bignum_print(BigNum* num, char format)
 }
 
 
-/*printf the array*/
+/* printf the array */
 void
 bignum_print_words(const BigNum* num, char format)
 {
@@ -427,7 +427,7 @@ bignum_print_words(const BigNum* num, char format)
 
     BigNumWord word = num->words[i];
     switch(format){
-        /*bin format*/
+        /* bin format */
         case 'b': {
             for(i = 0; i < num->size; ++i){
                 printf("word[%zu]:   ", i);
@@ -436,7 +436,7 @@ bignum_print_words(const BigNum* num, char format)
             }
             break;
         }
-        /*hex format*/
+        /* hex format */
         case 'x': {
             for(i = 0; i < num->size; ++i){
                 printf("word[%zu]:  ", i);
@@ -449,11 +449,11 @@ bignum_print_words(const BigNum* num, char format)
 }
 
 /*
-    NOTE: this function assume that either num1 or num2 has no leading zero words
-   -1 --> indicates error
-    0 --> num1 > num2
-    1 --> num1 < num2
-    2 --> num1 = num2
+ *  NOTE: this function assume that either num1 or num2 has no leading zero words
+ * -1 --> indicates error
+ *  0 --> num1 > num2
+ *  1 --> num1 < num2
+ *  2 --> num1 = num2
 */
 
 int
@@ -470,7 +470,7 @@ bignum_ucompare(const BigNum *num1, const BigNum *num2)
         return  1;
     }
 
-    /*num1->size == num2->size*/
+    /* num1->size == num2->size */
     for(i = 0; i < num1->size; ++i){
         if(num1->words[i] > num2->words[i]){
             return  0;
@@ -492,7 +492,7 @@ bignum_compare(const BigNum *num1, const BigNum *num2)
     MUST(num1 != NULL, "num1 pointer is NULL in bignum_compare");
     MUST(num2 != NULL, "num2 pointer is NULL in bignum_compare");
 
-    /*signs differ*/
+    /* signs differ */
     if (bignum_is_negative(num1) != bignum_is_negative(num2)) {
         return bignum_is_negative(num1) ? 1 : 0;
     }
@@ -510,7 +510,7 @@ bignum_compare(const BigNum *num1, const BigNum *num2)
         return ucompare_result;
     }
 
-    /* Both numbers are equal */
+    /* both numbers are equal */
     return 2;
 }
 
@@ -595,7 +595,7 @@ bignum_is_negative(const BigNum *num)
     return num->negative;
 }
 
-/**
+/*
  * Helper function to validate inputs and calc word and bit indices.
  */
 static int
@@ -622,7 +622,6 @@ bignum_set_bit(BigNum *num, int n)
     if (bignum_get_indices(num, n, &word_idx, &bit_idx) != 0) {
         return -1;
     }
-
     num->words[word_idx] |= ((BigNumWord)1 << bit_idx);
     return 0;
 }
@@ -636,7 +635,6 @@ bignum_unset_bit(BigNum *num, int n)
     if (bignum_get_indices(num, n, &word_idx, &bit_idx) != 0) {
         return -1;
     }
-
     num->words[word_idx] &= ~((BigNumWord)1 << bit_idx);
     return 0;
 }

@@ -70,7 +70,9 @@ int bignum_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena
 
     /* Set the sign of the result */
     res->negative = (num1->negative != num2->negative) && !bignum_is_zero(res);
-
+    if(arena == NULL){
+        bignum_free(temp);
+    }
     return 0;
 }
 

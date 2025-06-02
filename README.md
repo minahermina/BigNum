@@ -15,5 +15,5 @@ The BigNum library is being implemented as the foundational component for future
 
 ## Current Status
 
-The library is not complete. Core functionalities, such as certain arithmetic operations (`bignum_div`, `bignum_mod`, `bignum_mul`, `bignum_gcd`, `bignum_mod_exp`, `bignum_mod_inverse`) are not implemented yet.
+The library is not complete. Core functionalities, such as certain arithmetic operations (`bignum_div`, `bignum_mul`, `bignum_gcd`, `bignum_mod_exp`, `bignum_mod_inverse`) are not implemented yet.
 

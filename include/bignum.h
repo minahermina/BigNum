@@ -82,6 +82,7 @@ int bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena 
 int bignum_subtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                 /*done*/
 int bignum_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 int bignum_div(BigNum *div, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
+int bignum_udiv(BigNum *div, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
 int bignum_mod(BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
 int bignum_gcd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
 

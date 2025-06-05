@@ -27,36 +27,6 @@
 
 #define ABS(x) (x < 0 ? -x : x)
 
-void bignum_print_word(const BigNumWord word, char format){
-
-    switch(format){
-        /* bin format */
-        case 'b':{
-            for (int byte = (BIGNUM_WORD_SIZE/8) - 1; byte >= 0; byte--) {
-                unsigned char current_byte = (word >> (byte * 8)) & 0xFF;
-                for (int bit = 7; bit >= 0; bit--) {
-                    printf("%d", (current_byte >> bit) & 1);
-                }
-                printf(" ");
-            }
-            printf("\n");
-            break;
-        }
-        /* hex format */
-        case 'x':{
-                #if BIGNUM_WORD_SIZE == 64
-                    printf("0x%016" PRIX64 "\n", word);
-                #elif BIGNUM_WORD_SIZE == 32
-                    printf("0x%08" PRIX32 "\n", word);
-                #endif
-            break;
-        }
-        default: 
-            fprintf(stderr, "this format char is not supported");
-            break;
-    }
-
-}
 
 BigNum*
 bignum_new(Arena *arena)
@@ -383,6 +353,38 @@ bignum_from_hex(const char *str, size_t len, Arena* arena)
     return num;
 }
 
+
+
+void bignum_print_word(const BigNumWord word, char format){
+
+    switch(format){
+        /* bin format */
+        case 'b':{
+            for (int byte = (BIGNUM_WORD_SIZE/8) - 1; byte >= 0; byte--) {
+                unsigned char current_byte = (word >> (byte * 8)) & 0xFF;
+                for (int bit = 7; bit >= 0; bit--) {
+                    printf("%d", (current_byte >> bit) & 1);
+                }
+                printf(" ");
+            }
+            printf("\n");
+            break;
+        }
+        /* hex format */
+        case 'x':{
+                #if BIGNUM_WORD_SIZE == 64
+                    printf("0x%016" PRIX64 "\n", word);
+                #elif BIGNUM_WORD_SIZE == 32
+                    printf("0x%08" PRIX32 "\n", word);
+                #endif
+            break;
+        }
+        default: 
+            fprintf(stderr, "this format char is not supported");
+            break;
+    }
+
+}
 
 /* prints number in Big-endian from highest word (MSB) to lowest word (LSB)*/
 void bignum_print(BigNum* num, char format)

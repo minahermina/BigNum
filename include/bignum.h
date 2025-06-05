@@ -86,8 +86,18 @@ int bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena
 int bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                /*done*/
 int bignum_subtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                 /*done*/
 int bignum_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
-int bignum_div(BigNum *div, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
-int bignum_udiv(BigNum *div, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
+
+/*
+ * Euclidean Division (https://en.wikipedia.org/wiki/Euclidean_division)
+ * following this equation: (num1 = q * num2 + remain) as 0 <= remain < |num2|, ,
+ */
+int bignum_div(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
+
+/*
+ * divide num1 by num2 discarding their signs and compute q and remain
+ */
+int bignum_udiv(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
+
 int bignum_mod(BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
 int bignum_gcd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
 

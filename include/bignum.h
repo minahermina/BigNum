@@ -58,7 +58,12 @@ BigNum* bignum_new(Arena *arena);                                               
 BigNum* bignum_zero(Arena *arena);                                                                      /*done*/
 int bignum_set_zero(BigNum *num);                                                                       /*done*/
 void bignum_resize(BigNum* num, size_t new_size, Arena *arena);                                         /*done*/
-int bignum_copy(BigNum *dest, const BigNum *src, Arena *arena);                                         /*done*/
+
+/*
+ * The caller must ensure that dest is actually a valid pointer to a valid Bignum
+ * dest is resized if it is required
+*/
+void bignum_copy(BigNum *dest, const BigNum *src, Arena *arena);                                         /*done*/
 BigNum* bignum_dup(BigNum *src, Arena *arena);                                                          /*done*/
 int bignum_append_word(BigNum* num, const BigNumWord word, Arena *arena);                               /*done*/
 int bignum_prepend_zero_words(BigNum* num, size_t cnt , Arena *arena);                                  /*done*/
@@ -99,6 +104,14 @@ int bignum_xor(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena
 /* Modular Arithmetic */
 int bignum_mod_exp(BigNum *res, const BigNum *num1, const BigNum *exp, const BigNum *m, Arena *arena);
 int bignum_mod_inverse(BigNum *res, const BigNum *num1, const BigNum *n, Arena *arena);
+
+/*
+ *  NOTE: this function assume that either num1 or num2 has no leading zero words
+ * -1 --> indicates error
+ *  0 --> num1 > num2
+ *  1 --> num1 < num2
+ *  2 --> num1 = num2
+*/
 
 int bignum_compare(const BigNum *num1, const BigNum *num2);                                             /*done*/
 int bignum_ucompare(const BigNum *num1, const BigNum *num2);                                            /*done*/

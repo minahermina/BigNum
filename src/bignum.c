@@ -43,7 +43,7 @@ bignum_new(Arena *arena)
         num = (BigNum*) arena_alloc(arena, sizeof(BigNum));
         MUST(num != NULL, "Allocating Memory in bignum_new");
 
-        num->words = bignum_alloc_words(size * sizeof(BigNumWord), arena );
+        num->words = bignum_alloc_words(size, arena );
     }
 
     num->size = 0;

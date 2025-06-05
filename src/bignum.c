@@ -66,24 +66,14 @@ bignum_new(Arena *arena)
 
     if(arena == NULL) {
         num = (BigNum*) malloc(sizeof(BigNum));
-        if(num == NULL)
-            return NULL;
+        MUST(num != NULL, "Allocating Memory in bignum_new");
 
-        num->words = (BigNumWord*) calloc(size, sizeof(BigNumWord));
-        if(num->words == NULL){
-            free(num);
-            return NULL;
-        }
-
+        num->words = bignum_alloc_words(size, arena);
     } else {
         num = (BigNum*) arena_alloc(arena, sizeof(BigNum));
-        if(num == NULL) 
-            return NULL;
+        MUST(num != NULL, "Allocating Memory in bignum_new");
 
-        num->words = (BigNumWord*) arena_alloc(arena, size * sizeof(BigNumWord));
-        if(num->words == NULL) 
-            return NULL;
-
+        num->words = bignum_alloc_words(size * sizeof(BigNumWord), arena );
     }
 
     num->size = 0;
@@ -91,6 +81,38 @@ bignum_new(Arena *arena)
     num->negative = 0;
 
     return num;
+}
+
+BigNumWord*
+bignum_alloc_words(size_t size, Arena *arena)
+{
+    BigNumWord *words;
+
+    if(arena == NULL) {
+        words = (BigNumWord*) calloc(size, sizeof(BigNumWord));
+        if(words == NULL){
+            free(words);
+            MUST(words != NULL, "Allocating memory in bignum_alloc_words");
+        }
+
+    } else {
+        words = (BigNumWord*) arena_alloc(arena, size * sizeof(BigNumWord));
+        if(words == NULL){
+            MUST(words != NULL, "Allocating memory in bignum_alloc_words");
+        }
+
+    }
+    return words;
+}
+
+void
+bignum_init(BigNum *num, Arena *arena)
+{
+    size_t size;
+    MUST(num != NULL, "num pointer is NULL in bignum_init");
+
+    size = BIGNUM_DEFAULT_WORDS_SIZE;
+    num->words = bignum_alloc_words(size, arena);
 }
 
 BigNum*

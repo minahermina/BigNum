@@ -54,7 +54,9 @@ typedef struct {
 } BigNum;
 
 
+BigNumWord* bignum_alloc_words(size_t size, Arena *arena);                                              /*done*/
 BigNum* bignum_new(Arena *arena);                                                                       /*done*/
+void bignum_init(BigNum *num, Arena *arena);                                                             /*done*/
 BigNum* bignum_zero(Arena *arena);                                                                      /*done*/
 int bignum_set_zero(BigNum *num);                                                                       /*done*/
 void bignum_resize(BigNum* num, size_t new_size, Arena *arena);                                         /*done*/

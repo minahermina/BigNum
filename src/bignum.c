@@ -83,6 +83,9 @@ bignum_init(BigNum *num, Arena *arena)
 
     size = BIGNUM_DEFAULT_WORDS_SIZE;
     num->words = bignum_alloc_words(size, arena);
+
+    num->size = 0;
+    num->capacity = size;
 }
 
 BigNum*

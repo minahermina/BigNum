@@ -70,7 +70,7 @@ BigNum* bignum_dup(BigNum *src, Arena *arena);                                  
 int bignum_append_word(BigNum* num, const BigNumWord word, Arena *arena);                               /*done*/
 int bignum_prepend_zero_words(BigNum* num, size_t cnt , Arena *arena);                                  /*done*/
 void bignum_print_words(const BigNum* num, char format);                                                /*done*/
-void bignum_print(BigNum* num, char format);                                                            /*done*/
+void bignum_print(const BigNum* num, char format);                                                            /*done*/
 void bignum_free(BigNum *num);                                                                          /*done*/
 
 /* Conversion */
@@ -104,10 +104,10 @@ int bignum_mod(BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *ar
 int bignum_gcd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
 
 /* Bitwise Operation */
-BigNumWord bignum_lshift_word(BigNumWord word, size_t nbits);                                           /*done*/
-int bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena);                                /*done*/
-BigNumWord bignum_rshift_word(BigNumWord word, size_t nbits);                                           /*done*/
-int bignum_rshift(BigNum *res, BigNum *num1, int nbits);
+BigNumWord bignum_lshift_word(const BigNumWord word, size_t nbits);                                    /*done*/
+int bignum_lshift(BigNum *res, const BigNum *num, size_t nbits, Arena *arena);                         /*done*/
+BigNumWord bignum_rshift_word(const BigNumWord word, size_t nbits);                                    /*done*/
+int bignum_rshift(BigNum *res, const BigNum *num1, int nbits);
 int bignum_and(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 int bignum_or(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                       /*done*/
 int bignum_xor(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
@@ -130,7 +130,7 @@ int bignum_ucompare(const BigNum *num1, const BigNum *num2);                    
 int bignum_is_zero(const BigNum *num);                                                                  /*done*/
 int bignum_is_one(const BigNum *num);                                                                   /*done*/
 
-int bignum_num_bits_word(BigNumWord word);                                                              /*done*/
+int bignum_num_bits_word(const BigNumWord word);                                                        /*done*/
 int bignum_num_bits(const BigNum *num);                                                                 /*done*/
 int bignum_num_bytes(const BigNum *num);                                                                /*done*/
 int bignum_is_negative(const BigNum *num);                                                              /*done*/

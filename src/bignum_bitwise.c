@@ -32,7 +32,7 @@ FOR from 0 to num's size
 */
 
 BigNumWord
-bignum_lshift_word(BigNumWord word, size_t nbits)
+bignum_lshift_word(const BigNumWord word, size_t nbits)
 {
     if(nbits == 0)
         return word;
@@ -43,7 +43,7 @@ bignum_lshift_word(BigNumWord word, size_t nbits)
     return (word << nbits);
 }
 int
-bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena)
+bignum_lshift(BigNum *res, const BigNum *num, size_t nbits, Arena *arena)
 {
     BigNumWord word, prev_msb;
     size_t i, shift_bits, word_prepend_count;
@@ -87,7 +87,7 @@ bignum_lshift(BigNum *res, BigNum *num, size_t nbits, Arena *arena)
 
 
 BigNumWord
-bignum_rshift_word(BigNumWord word, size_t nbits)
+bignum_rshift_word(const BigNumWord word, size_t nbits)
 {
     if(nbits == 0)
         return word;
@@ -109,7 +109,7 @@ bignum_rshift(BigNum *res, const BigNum *a, int nbits)
     * 2 -> xor
 */
 BigNumWord
-bignum_and_or_xor_word(BigNumWord word1, BigNumWord word2, int op)
+bignum_and_or_xor_word(const BigNumWord word1, BigNumWord word2, int op)
 {
     assert(op == 0 || op == 1 || op == 2);
     BigNumWord res = 0;

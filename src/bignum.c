@@ -390,7 +390,7 @@ void bignum_print_word(const BigNumWord word, char format){
 }
 
 /* prints number in Big-endian from highest word (MSB) to lowest word (LSB)*/
-void bignum_print(BigNum* num, char format)
+void bignum_print(const BigNum* num, char format)
 {
     MUST(num != NULL, "num pointer is NULL in bignum_print");
     BigNumWord val;

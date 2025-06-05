@@ -142,12 +142,17 @@ bignum_resize(BigNum* num, size_t newsize, Arena *arena)
     return ;
 }
 
-int
+void
 bignum_copy(BigNum *dest, const BigNum *src, Arena *arena)
 {
     size_t i;
     MUST(dest != NULL, "dest pointer is NULL in bignum_copy");
     MUST(src != NULL, "src pointer is NULL in bignum_copy");
+
+    /*dest == src ? do nothing*/
+    if(bignum_compare(src, dest) == 2){
+        return;
+    }
 
     bignum_resize(dest, src->size, arena);
 
@@ -155,8 +160,6 @@ bignum_copy(BigNum *dest, const BigNum *src, Arena *arena)
     for(i = 0; i < dest->size; ++i){
         dest->words[i] = src->words[i];
     }
-
-    return 0;
 }
 
 
@@ -171,10 +174,7 @@ bignum_dup(BigNum *src, Arena *arena)
 
     MUST(num != NULL, "Allocating memory in bignum_dup");
 
-    /* copy from src to num */
-    if(bignum_copy(num, src, arena) < 0){
-        return NULL;
-    }
+    bignum_copy(num, src, arena);
 
     return num;
 }

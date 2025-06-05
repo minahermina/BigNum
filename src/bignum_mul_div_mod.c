@@ -202,9 +202,27 @@ bignum_div(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Ar
     return 0;
 }
 
+
 /*
-int
-bignum_mod(BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena)
-{
-}
+ * Computing q in bignum_udiv and bignum_div introduce unnecessary overhead.
+ * so refactoring these functions to be more general and avoid computing q when not needed.  
+ 
 */
+int
+bignum_mod(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
+{
+    MUST(res != NULL, "res pointer is NULL in bignum_mod");
+    MUST(num1 != NULL, "num1 pointer is NULL in bignum_mod");
+    MUST(num2 != NULL, "num2 pointer is NULL in bignum_mod");
+
+    BigNum *q = bignum_new(arena);
+    if(bignum_div(q, res, num1, num2, arena) < 0){
+        return -1;
+    }
+
+    if(arena == NULL){
+        bignum_free(q);
+    }
+    return 0;
+}
+

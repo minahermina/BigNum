@@ -1,6 +1,6 @@
 CC ?= clang
 CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_XOPEN_SOURCE=700L -D_POSIX_C_SOURCE=200809L
-CFLAGS = -std=c99 -Wall -Wextra -ggdb -O2 -Iinclude
+CFLAGS = -std=c99 -fPIC -Wall -Wextra -ggdb -O3 -Iinclude
 LDFLAGS =
 SRC_DIR = src
 BUILD_DIR = build
@@ -13,8 +13,15 @@ SRC_FILES = \
 	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/bignum.c \
 	$(SRC_DIR)/bignum_bitwise.c \
-	$(SRC_DIR)/bignum_add_sub.c \
-	$(SRC_DIR)/bignum_mul_div_mod.c
+	$(SRC_DIR)/bn_add.c \
+	$(SRC_DIR)/bn_uadd.c \
+	$(SRC_DIR)/bn_subtract.c \
+	$(SRC_DIR)/bn_usubtract.c \
+	$(SRC_DIR)/bn_mul.c \
+	$(SRC_DIR)/bn_mod.c \
+	$(SRC_DIR)/bn_udiv.c \
+	$(SRC_DIR)/bn_div.c \
+	$(SRC_DIR)/bn_pow.c \
 
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC_FILES))
 

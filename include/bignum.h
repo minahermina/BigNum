@@ -74,6 +74,7 @@ void bn_copy(BigNum *dest, const BigNum *src, Arena *arena);                    
 BigNum* bn_dup(BigNum *src, Arena *arena);                                                          /*done*/
 int bn_append_word(BigNum* num, const BigNumWord word, Arena *arena);                               /*done*/
 int bn_prepend_zero_words(BigNum* num, size_t cnt , Arena *arena);                                  /*done*/
+void bn_print_word(const BigNumWord word, char format);
 void bn_print_words(const BigNum* num, char format);                                                /*done*/
 void bn_print(const BigNum* num, char format);                                                      /*done*/
 void bn_free(BigNum *num);                                                                          /*done*/

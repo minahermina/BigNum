@@ -359,11 +359,10 @@ bn_from_hex(const char *str, size_t len, Arena* arena)
 
 
 
-void bn_print_word(const BigNumWord word, char format){
-
-    switch(format){
+void bn_print_word(const BigNumWord word, char format) {
+    switch(format) {
         /* bin format */
-        case 'b':{
+        case 'b': {
             for (int byte = (BN_WORD_SIZE/8) - 1; byte >= 0; byte--) {
                 unsigned char current_byte = (word >> (byte * 8)) & 0xFF;
                 for (int bit = 7; bit >= 0; bit--) {
@@ -375,19 +374,27 @@ void bn_print_word(const BigNumWord word, char format){
             break;
         }
         /* hex format */
-        case 'x':{
-                #if BN_WORD_SIZE == 64
-                    printf("0x%016" PRIX64 "\n", word);
-                #elif BN_WORD_SIZE == 32
-                    printf("0x%08" PRIX32 "\n", word);
-                #endif
+        case 'x': {
+            printf("0x");
+            #if BN_WORD_SIZE == 64
+                for (int i = 14; i >= 0; i -= 2) { unsigned char hex_pair = (word >> (i * 4)) & 0xFF;
+                    printf("%02X", hex_pair);
+                    if (i > 0) printf(" ");
+                }
+            #elif BN_WORD_SIZE == 32
+                for (int i = 6; i >= 0; i -= 2) {
+                    unsigned char hex_pair = (word >> (i * 4)) & 0xFF;
+                    printf("%02X", hex_pair);
+                    if (i > 0) printf(" ");
+                }
+            #endif
+            printf("\n");
             break;
         }
         default: 
-            fprintf(stderr, "this format char is not supported");
+            fprintf(stderr, "this format char is not supported\n");
             break;
     }
-
 }
 
 /* prints number in Big-endian from highest word (MSB) to lowest word (LSB)*/

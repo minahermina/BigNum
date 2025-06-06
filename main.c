@@ -5,41 +5,49 @@
 #include <limits.h>
 
 int
-main(){
+main(int argc, char **argv){
     Arena arena = {0};
     arena_init(&arena, 4096);
 
-    char str1[] = "0x63C";
-    char str2[] = "0x0C7800";
-    BigNum *num1 = bignum_from_hex(str1, strlen(str1), &arena);
-    BigNum *num2 =  bignum_from_hex(str2, strlen(str2), &arena);
-    BigNum *res =  bignum_new(&arena);
+
+    if(argc < 3){
+        fprintf(stderr, "NO. or arguments is less than 2\n");
+        return -1;
+    }
+
+    char *arg1 = argv[1];
+    char *arg2 = argv[2];
+    BigNum *num1 = bn_from_dec(arg1, strlen(arg1), &arena);
+    BigNum *num2 =  bn_from_dec(arg2, strlen(arg2), &arena);
+
+    BigNum remain, q;
+    bn_init(&remain, &arena);
+    bn_init(&q, &arena);
 
     printf("---num1: ---\n");
-    bignum_print_words(num1, 'x');
+    bn_print_words(num1, 'x');
     printf("\n");
 
     printf("----num2: --------\n");
-    bignum_print_words(num2, 'x');
+    bn_print_words(num2, 'x');
     printf("\n");
 
 
-    printf("----res: --------\n");
-    bignum_lshift(res, num1, 9, &arena);
-    bignum_print_words(res, 'x');
+    bn_div(&q, &remain, num1, num2, &arena);
+
+    printf("----q: --------\n");
+    bn_print_words(&q, 'x');
     printf("\n");
 
-    if(bignum_compare(res, num2) < 0){
-        printf("error");
-    }
-
-
-
-    /* printf("---res: ---\n");
-    bignum_print_words(res, 'b');
+    printf("----remain: --------\n");
+    bn_print_words(&remain, 'x');
     printf("\n");
-    bignum_print_words(res, 'x');
-    */
+/*
+    printf("----q: --------\n");
+    bn_print_words(q, 'x');
+    printf("\n");
+
+*/
 
 
 

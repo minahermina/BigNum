@@ -25,15 +25,15 @@
 
 #if defined(__x86_64__)
     typedef uint64_t BigNumWord;
-    #define BIGNUM_WORD_SIZE 64
-    #define BIGNUM_MASK1 ((BigNumWord)-1)
+    #define BN_WORD_SIZE 64
+    #define BN_MASK1 ((BigNumWord)-1)
 #elif defined(__i386__) || defined(__i686__)
     typedef uint32_t BigNumWord;
-    #define BIGNUM_WORD_SIZE 32
-    #define BIGNUM_MASK1 ((BigNumWord)-1)
+    #define BN_WORD_SIZE 32
+    #define BN_MASK1 ((BigNumWord)-1)
 #endif
 
-#define BIGNUM_DEFAULT_WORDS_SIZE 24
+#define BN_DEFAULT_WORDS_SIZE 24
 
 #define DEBUG_BIGNUM(num) \
 do {\
@@ -54,68 +54,68 @@ typedef struct {
 } BigNum;
 
 
-BigNumWord* bignum_alloc_words(size_t size, Arena *arena);                                              /*done*/
-BigNum* bignum_new(Arena *arena);                                                                       /*done*/
-void bignum_init(BigNum *num, Arena *arena);                                                             /*done*/
-BigNum* bignum_zero(Arena *arena);                                                                      /*done*/
-int bignum_set_zero(BigNum *num);                                                                       /*done*/
-void bignum_resize(BigNum* num, size_t new_size, Arena *arena);                                         /*done*/
+BigNumWord* bn_alloc_words(size_t size, Arena *arena);                                              /*done*/
+BigNum* bn_new(Arena *arena);                                                                       /*done*/
+void bn_init(BigNum *num, Arena *arena);                                                            /*done*/
+BigNum* bn_zero(Arena *arena);                                                                      /*done*/
+int bn_set_zero(BigNum *num);                                                                       /*done*/
+void bn_resize(BigNum* num, size_t new_size, Arena *arena);                                         /*done*/
 
 /*
  * The caller must ensure that dest is actually a valid pointer to a valid Bignum
  * dest is resized if it is required
 */
-void bignum_copy(BigNum *dest, const BigNum *src, Arena *arena);                                         /*done*/
-BigNum* bignum_dup(BigNum *src, Arena *arena);                                                          /*done*/
-int bignum_append_word(BigNum* num, const BigNumWord word, Arena *arena);                               /*done*/
-int bignum_prepend_zero_words(BigNum* num, size_t cnt , Arena *arena);                                  /*done*/
-void bignum_print_words(const BigNum* num, char format);                                                /*done*/
-void bignum_print(const BigNum* num, char format);                                                            /*done*/
-void bignum_free(BigNum *num);                                                                          /*done*/
+void bn_copy(BigNum *dest, const BigNum *src, Arena *arena);                                        /*done*/
+BigNum* bn_dup(BigNum *src, Arena *arena);                                                          /*done*/
+int bn_append_word(BigNum* num, const BigNumWord word, Arena *arena);                               /*done*/
+int bn_prepend_zero_words(BigNum* num, size_t cnt , Arena *arena);                                  /*done*/
+void bn_print_words(const BigNum* num, char format);                                                /*done*/
+void bn_print(const BigNum* num, char format);                                                      /*done*/
+void bn_free(BigNum *num);                                                                          /*done*/
 
 /* Conversion */
-int *bignum_bn2dec(const BigNum *num, char *dest, size_t len);
-int *bignum_bn2hex(const BigNum *num, char *dest, size_t len);
-int *bignum_bn2bin(const BigNum *num, char *dest, size_t len);
-BigNum *bignum_from_int(int n, Arena* arena);                                                           /*done*/
-BigNum *bignum_from_bin(const char *str, size_t len, Arena *arena);                                     /*done*/
-BigNum *bignum_from_dec(const char *str, size_t len, Arena *arena);                                     /*done*/
-BigNum *bignum_from_hex(const char *str, size_t len, Arena *arena);                                     /*done*/
+int *bn_bn2dec(const BigNum *num, char *dest, size_t len);
+int *bn_bn2hex(const BigNum *num, char *dest, size_t len);
+int *bn_bn2bin(const BigNum *num, char *dest, size_t len);
+BigNum *bn_from_int(int n, Arena* arena);                                                           /*done*/
+BigNum *bn_from_bin(const char *str, size_t len, Arena *arena);                                     /*done*/
+BigNum *bn_from_dec(const char *str, size_t len, Arena *arena);                                     /*done*/
+BigNum *bn_from_hex(const char *str, size_t len, Arena *arena);                                     /*done*/
 
 /* Arithmetic */
-int bignum_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                     /*done*/
-int bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
-int bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                /*done*/
-int bignum_subtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                 /*done*/
-int bignum_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
+int bn_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                     /*done*/
+int bn_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
+int bn_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                /*done*/
+int bn_subtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                 /*done*/
+int bn_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 
 /*
  * Euclidean Division (https://en.wikipedia.org/wiki/Euclidean_division)
  * following this equation: (num1 = q * num2 + remain) as 0 <= remain < |num2|, ,
  */
-int bignum_div(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
+int bn_div(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
 
 /*
  * divide num1 by num2 discarding their signs and compute q and remain
  */
-int bignum_udiv(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
+int bn_udiv(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
 
-int bignum_mod(BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
-int bignum_gcd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
+int bn_mod(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
+int bn_gcd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
 
 /* Bitwise Operation */
-BigNumWord bignum_lshift_word(const BigNumWord word, size_t nbits);                                    /*done*/
-int bignum_lshift(BigNum *res, const BigNum *num, size_t nbits, Arena *arena);                         /*done*/
-BigNumWord bignum_rshift_word(const BigNumWord word, size_t nbits);                                    /*done*/
-int bignum_rshift(BigNum *res, const BigNum *num1, int nbits);
-int bignum_and(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
-int bignum_or(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                       /*done*/
-int bignum_xor(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
+BigNumWord bn_lshift_word(const BigNumWord word, size_t nbits);                                    /*done*/
+int bn_lshift(BigNum *res, const BigNum *num, size_t nbits, Arena *arena);                         /*done*/
+BigNumWord bn_rshift_word(const BigNumWord word, size_t nbits);                                    /*done*/
+int bn_rshift(BigNum *res, const BigNum *num1, int nbits);
+int bn_and(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
+int bn_or(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                       /*done*/
+int bn_xor(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 
 
 /* Modular Arithmetic */
-int bignum_mod_exp(BigNum *res, const BigNum *num1, const BigNum *exp, const BigNum *m, Arena *arena);
-int bignum_mod_inverse(BigNum *res, const BigNum *num1, const BigNum *n, Arena *arena);
+int bn_mod_exp(BigNum *res, const BigNum *num1, const BigNum *exp, const BigNum *m, Arena *arena);
+int bn_mod_inverse(BigNum *res, const BigNum *num1, const BigNum *n, Arena *arena);
 
 /*
  *  NOTE: this function assume that either num1 or num2 has no leading zero words
@@ -125,17 +125,17 @@ int bignum_mod_inverse(BigNum *res, const BigNum *num1, const BigNum *n, Arena *
  *  2 --> num1 = num2
 */
 
-int bignum_compare(const BigNum *num1, const BigNum *num2);                                             /*done*/
-int bignum_ucompare(const BigNum *num1, const BigNum *num2);                                            /*done*/
-int bignum_is_zero(const BigNum *num);                                                                  /*done*/
-int bignum_is_one(const BigNum *num);                                                                   /*done*/
+int bn_compare(const BigNum *num1, const BigNum *num2);                                             /*done*/
+int bn_ucompare(const BigNum *num1, const BigNum *num2);                                            /*done*/
+int bn_is_zero(const BigNum *num);                                                                  /*done*/
+int bn_is_one(const BigNum *num);                                                                   /*done*/
 
-int bignum_num_bits_word(const BigNumWord word);                                                        /*done*/
-int bignum_num_bits(const BigNum *num);                                                                 /*done*/
-int bignum_num_bytes(const BigNum *num);                                                                /*done*/
-int bignum_is_negative(const BigNum *num);                                                              /*done*/
-int bignum_set_bit(BigNum *num, int n);                                                                 /*done*/
-int bignum_unset_bit(BigNum *num, int n);                                                               /*done*/
-int bignum_is_bit_set(const BigNum *num, int n);                                                        /*done*/
+int bn_num_bits_word(const BigNumWord word);                                                        /*done*/
+int bn_num_bits(const BigNum *num);                                                                 /*done*/
+int bn_num_bytes(const BigNum *num);                                                                /*done*/
+int bn_is_negative(const BigNum *num);                                                              /*done*/
+int bn_set_bit(BigNum *num, int n);                                                                 /*done*/
+int bn_unset_bit(BigNum *num, int n);                                                               /*done*/
+int bn_is_bit_set(const BigNum *num, int n);                                                        /*done*/
 
 #endif /*BigNum*/

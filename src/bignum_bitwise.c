@@ -32,74 +32,73 @@ FOR from 0 to num's size
 */
 
 BigNumWord
-bignum_lshift_word(const BigNumWord word, size_t nbits)
+bn_lshift_word(const BigNumWord word, size_t nbits)
 {
     if(nbits == 0)
         return word;
 
-    if(nbits > BIGNUM_WORD_SIZE - 1)
+    if(nbits > BN_WORD_SIZE - 1)
         return 0;
 
     return (word << nbits);
 }
+
 int
-bignum_lshift(BigNum *res, const BigNum *num, size_t nbits, Arena *arena)
+bn_lshift(BigNum *res, const BigNum *num, size_t nbits, Arena *arena)
 {
     BigNumWord word, prev_msb;
     size_t i, shift_bits, word_prepend_count;
 
-    MUST(res != NULL, "res pointer is NULL in bignum_lshift");
-    MUST(num != NULL, "num pointer is NULL in bignum_lshift");
+    MUST(res != NULL, "res pointer is NULL in bn_lshift");
+    MUST(num != NULL, "num pointer is NULL in bn_lshift");
 
     /*no shifting needed*/
     if(nbits == 0)
         return 0;
 
     /* 
-     * calc how many words may be needed to prepend if nbits >= BIGNUM_WORD_SIZE
+     * calc how many words may be needed to prepend if nbits >= BN_WORD_SIZE
      * and shift_bits to shift each word
     */
-    word_prepend_count = nbits / BIGNUM_WORD_SIZE;
-    shift_bits         = nbits % BIGNUM_WORD_SIZE;
+    word_prepend_count = nbits / BN_WORD_SIZE;
+    shift_bits         = nbits % BN_WORD_SIZE;
 
     /*may be optimized !*/
-    bignum_copy(res, num, arena);
+    bn_copy(res, num, arena);
 
     prev_msb = 0; /* a mask with all zeros */
     /* nbits < 64 or < 32 */
     if(shift_bits != 0){
         for(i = 0; i < res->size; ++i){ /* O(N) */
             word = num->words[i];
-            res->words[i] = bignum_lshift_word(word, shift_bits);
+            res->words[i] = bn_lshift_word(word, shift_bits);
             res->words[i] |=  prev_msb;
-            prev_msb = ((word >> (BIGNUM_WORD_SIZE - shift_bits)));
+            prev_msb = ((word >> (BN_WORD_SIZE - shift_bits)));
         }
 
         if(prev_msb != 0) {
-            bignum_append_word(res, prev_msb, arena);
+            bn_append_word(res, prev_msb, arena);
         }
     }
 
-    bignum_prepend_zero_words(res, word_prepend_count, arena);
+    bn_prepend_zero_words(res, word_prepend_count, arena);
     return 0;
 }
 
-
-
 BigNumWord
-bignum_rshift_word(const BigNumWord word, size_t nbits)
+bn_rshift_word(const BigNumWord word, size_t nbits)
 {
     if(nbits == 0)
         return word;
 
-    if(nbits > BIGNUM_WORD_SIZE - 1)
+    if(nbits > BN_WORD_SIZE - 1)
         return 0;
 
     return (word >> nbits);
 }
 
 /* int
-bignum_rshift(BigNum *res, const BigNum *a, int nbits)
+bn_rshift(BigNum *res, const BigNum *a, int nbits)
 {
 } */
 
@@ -109,7 +108,7 @@ bignum_rshift(BigNum *res, const BigNum *a, int nbits)
     * 2 -> xor
 */
 BigNumWord
-bignum_and_or_xor_word(const BigNumWord word1, BigNumWord word2, int op)
+bn_and_or_xor_word(const BigNumWord word1, BigNumWord word2, int op)
 {
     assert(op == 0 || op == 1 || op == 2);
     BigNumWord res = 0;
@@ -130,7 +129,7 @@ bignum_and_or_xor_word(const BigNumWord word1, BigNumWord word2, int op)
 }
 
 int
-bignum_and_or_xor(BigNum *res, const BigNum *num1, const BigNum *num2, int op, Arena *arena)
+bn_and_or_xor(BigNum *res, const BigNum *num1, const BigNum *num2, int op, Arena *arena)
 {
     BigNumWord zero;
     size_t i, max_size, min_size;
@@ -145,49 +144,49 @@ bignum_and_or_xor(BigNum *res, const BigNum *num1, const BigNum *num2, int op, A
 
     max_size = num1->size;
     min_size = num2->size;
-    bignum_resize(res, max_size, arena);
+    bn_resize(res, max_size, arena);
 
     for(i = 0; i < min_size; i++){
-        res->words[i] = bignum_and_or_xor_word(num1->words[i], num2->words[i], op);
+        res->words[i] = bn_and_or_xor_word(num1->words[i], num2->words[i], op);
     }
 
     zero = 0;
     for(; i < max_size; i++){
-        res->words[i] = bignum_and_or_xor_word(num1->words[i], zero, op);
+        res->words[i] = bn_and_or_xor_word(num1->words[i], zero, op);
     }
 
     return 1;
 }
 
 int
-bignum_and(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
+bn_and(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
-    MUST(res != NULL, "res pointer is NULL in bignum_and");
-    MUST(num1 != NULL, "num pointer is NULL in bignum_and");
-    MUST(num2 != NULL, "num pointer is NULL in bignum_and");
+    MUST(res  != NULL, "res pointer is NULL in bn_and");
+    MUST(num1 != NULL, "num pointer is NULL in bn_and");
+    MUST(num2 != NULL, "num pointer is NULL in bn_and");
 
-    bignum_and_or_xor(res, num1, num2, 0, arena);
+    bn_and_or_xor(res, num1, num2, 0, arena);
     return 1;
 }
 
 int
-bignum_or(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
+bn_or(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
-    MUST(res != NULL, "res pointer is NULL in bignum_or");
-    MUST(num1 != NULL, "num pointer is NULL in bignum_or");
-    MUST(num2 != NULL, "num pointer is NULL in bignum_or");
+    MUST(res  != NULL, "res pointer is NULL in bn_or");
+    MUST(num1 != NULL, "num pointer is NULL in bn_or");
+    MUST(num2 != NULL, "num pointer is NULL in bn_or");
 
-    bignum_and_or_xor(res, num1, num2, 1, arena);
+    bn_and_or_xor(res, num1, num2, 1, arena);
     return 1;
 }
 
 int
-bignum_xor(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
+bn_xor(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
-    MUST(res != NULL, "res pointer is NULL in bignum_xor");
-    MUST(num1 != NULL, "num pointer is NULL in bignum_xor");
-    MUST(num2 != NULL, "num pointer is NULL in bignum_xor");
+    MUST(res  != NULL, "res pointer is NULL in bn_xor");
+    MUST(num1 != NULL, "num pointer is NULL in bn_xor");
+    MUST(num2 != NULL, "num pointer is NULL in bn_xor");
 
-    bignum_and_or_xor(res, num1, num2, 2, arena);
+    bn_and_or_xor(res, num1, num2, 2, arena);
     return 1;
 }

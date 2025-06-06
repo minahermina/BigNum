@@ -21,17 +21,15 @@
 #include <bignum.h>
 #include <utils.h>
 
-
-
 int
-bignum_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
+bn_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
     BigNumWord carry, sum, a;
     const BigNum *temp;
     size_t max_size, min_size, i;
-    MUST(res  != NULL, "res pointer is NULL in bignum_uadd");
-    MUST(num1 != NULL, "num1 pointer is NULL in bignum_uadd");
-    MUST(num2 != NULL, "num2 pointer is NULL in bignum_uadd");
+    MUST(res  != NULL, "res pointer is NULL in bn_uadd");
+    MUST(num1 != NULL, "num1 pointer is NULL in bn_uadd");
+    MUST(num2 != NULL, "num2 pointer is NULL in bn_uadd");
 
     /* swap num1 with num2 */
     if(num1->size < num2->size){
@@ -43,7 +41,7 @@ bignum_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
     max_size = num1->size;
     min_size = num2->size;
 
-    bignum_resize(res, max_size + 1, arena);
+    bn_resize(res, max_size + 1, arena);
 
     carry = 0;
     for(i = 0; i < min_size; ++i){
@@ -79,33 +77,33 @@ bignum_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 }
 
 int
-bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
+bn_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
     int compare_result, ret;
-    MUST(res  != NULL, "res pointer is NULL in bignum_add");
-    MUST(num1 != NULL, "num1 pointer is NULL in bignum_add");
-    MUST(num2 != NULL, "num2 pointer is NULL in bignum_add");
+    MUST(res  != NULL, "res pointer is NULL in bn_add");
+    MUST(num1 != NULL, "num1 pointer is NULL in bn_add");
+    MUST(num2 != NULL, "num2 pointer is NULL in bn_add");
 
 
-    if(bignum_is_negative(num1) == bignum_is_negative(num2)){
-        ret = bignum_uadd(res, num1, num2, arena);
+    if(bn_is_negative(num1) == bn_is_negative(num2)){
+        ret = bn_uadd(res, num1, num2, arena);
         res->negative = num1->negative;
     } else{
-        compare_result = bignum_ucompare(num1, num2);
+        compare_result = bn_ucompare(num1, num2);
         /*
          * num1 > num2
          * + > -
          */
         if(compare_result == 0) {
             res->negative = 1;
-            ret = bignum_usubtract(res, num1, num2, arena);
+            ret = bn_usubtract(res, num1, num2, arena);
         } 
         /*
          * num1 < num2
          * - > +
          */
         else if(compare_result == 1) {
-            ret = bignum_usubtract(res, num2, num1, arena);
+            ret = bn_usubtract(res, num2, num1, arena);
             res->negative = 1;
         } 
         /*
@@ -114,7 +112,7 @@ bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
          * each one is zero
          */
         else{
-            ret = bignum_set_zero(res);
+            ret = bn_set_zero(res);
             res->negative = 0;
         }
     }
@@ -124,17 +122,17 @@ bignum_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 
 /* The arena is unused here but retained for interface consistency. */
 int
-bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
+bn_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
     (void)arena;
     size_t i;
     BigNumWord a, b, diff, borrow, cmp;
-    MUST(res  != NULL, "res pointer is NULL in bignum_usubtract");
-    MUST(num1 != NULL, "num1 pointer is NULL in bignum_usubtract");
-    MUST(num2 != NULL, "num2 pointer is NULL in bignum_usubtract");
+    MUST(res  != NULL, "res pointer is NULL in bn_usubtract");
+    MUST(num1 != NULL, "num1 pointer is NULL in bn_usubtract");
+    MUST(num2 != NULL, "num2 pointer is NULL in bn_usubtract");
 
     /* check for num1 > num2 */
-    cmp = bignum_ucompare(num1, num2);
+    cmp = bn_ucompare(num1, num2);
     if (cmp == 1){
         return -1;
     }
@@ -145,7 +143,7 @@ bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *are
         b = (i < num2->size ? num2->words[i] : 0); /* as num1 is longer than num2 */
 
         if(a < b + borrow){ /* borrow needed */
-            diff = (a + BIGNUM_MASK1 + 1) - a - borrow;
+            diff = (a + BN_MASK1 + 1) - a - borrow;
             res->words[i] = diff;
             borrow = 1;
         } else {/* no borrow ! */
@@ -162,41 +160,41 @@ bignum_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *are
 }
 
 int
-bignum_subtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
+bn_subtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
     int compare_result, ret;
-    MUST(res  != NULL, "res pointer is NULL in bignum_subtract");
-    MUST(num1 != NULL, "num1 pointer is NULL in bignum_subtract");
-    MUST(num2 != NULL, "num2 pointer is NULL in bignum_subtract");
+    MUST(res  != NULL, "res pointer is NULL in bn_subtract");
+    MUST(num1 != NULL, "num1 pointer is NULL in bn_subtract");
+    MUST(num2 != NULL, "num2 pointer is NULL in bn_subtract");
 
     /*
      * +num1 - -num2 =  num1 + num2;
      * -num1 - +num2 =  -(num1 + num2);
      */
-    if(bignum_is_negative(num1) != bignum_is_negative(num2)){
-        ret = bignum_uadd(res, num1, num2, arena);
+    if(bn_is_negative(num1) != bn_is_negative(num2)){
+        ret = bn_uadd(res, num1, num2, arena);
         res->negative = num1->negative;
     } else{
-        compare_result = bignum_ucompare(num1, num2);
+        compare_result = bn_ucompare(num1, num2);
         /*
          * -5 - -3 = (5-3) * -1 = -2
          */
         if(compare_result == 0) {
-            ret = bignum_usubtract(res, num1, num2, arena);
+            ret = bn_usubtract(res, num1, num2, arena);
             res->negative = num1->negative;
         }
         /*
          * -5 - -7 = (7-5) * opposite sign of (-5) = -2
          */
         else if(compare_result == 1){
-            ret = bignum_usubtract(res, num2, num1, arena);
+            ret = bn_usubtract(res, num2, num1, arena);
             res->negative = !(num1->negative);
         }
         /*
          * num1 == num2
          */
         else {
-            ret = bignum_set_zero(res);
+            ret = bn_set_zero(res);
             res->negative = 0;
         }
     }

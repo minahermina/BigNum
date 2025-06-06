@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <bignum.h>
-#include <inttypes.h>
 #include <string.h>
-#include <limits.h>
 
 int
 main(int argc, char **argv){
     Arena arena = {0};
-    arena_init(&arena, 4096);
+    arena_init(&arena, 2 * 4096);
 
 
     if(argc < 3){
@@ -20,9 +18,8 @@ main(int argc, char **argv){
     BigNum *num1 = bn_from_dec(arg1, strlen(arg1), &arena);
     BigNum *num2 =  bn_from_dec(arg2, strlen(arg2), &arena);
 
-    BigNum remain, q;
-    bn_init(&remain, &arena);
-    bn_init(&q, &arena);
+    BigNum res;
+    bn_init(&res, &arena);
 
     printf("---num1: ---\n");
     bn_print_words(num1, 'x');
@@ -33,15 +30,12 @@ main(int argc, char **argv){
     printf("\n");
 
 
-    bn_div(&q, &remain, num1, num2, &arena);
+    bn_subtract(&res, num1, num2, &arena);
 
-    printf("----q: --------\n");
-    bn_print_words(&q, 'x');
+    printf("----res: --------\n");
+    bn_print_words(&res, 'x');
     printf("\n");
 
-    printf("----remain: --------\n");
-    bn_print_words(&remain, 'x');
-    printf("\n");
 /*
     printf("----q: --------\n");
     bn_print_words(q, 'x');

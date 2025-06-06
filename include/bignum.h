@@ -94,6 +94,9 @@ int bn_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *are
 int bn_subtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                 /*done*/
 int bn_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 
+/* res = num ^ pow */
+int bn_pow(BigNum *res, const BigNum *num, const BigNum *pow, Arena *arena);                      /*done*/
+
 /*
  * Euclidean Division (https://en.wikipedia.org/wiki/Euclidean_division)
  * following this equation: (num1 = q * num2 + remain) as 0 <= remain < |num2|, ,
@@ -105,18 +108,17 @@ int bn_div(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Ar
  */
 int bn_udiv(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
 
-int bn_mod(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
+int bn_mod(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 int bn_gcd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
 
 /* Bitwise Operation */
-BigNumWord bn_lshift_word(const BigNumWord word, size_t nbits);                                    /*done*/
-int bn_lshift(BigNum *res, const BigNum *num, size_t nbits, Arena *arena);                         /*done*/
-BigNumWord bn_rshift_word(const BigNumWord word, size_t nbits);                                    /*done*/
+BigNumWord bn_lshift_word(const BigNumWord word, size_t nbits);                                     /*done*/
+int bn_lshift(BigNum *res, const BigNum *num, size_t nbits, Arena *arena);                          /*done*/
+BigNumWord bn_rshift_word(const BigNumWord word, size_t nbits);                                     /*done*/
 int bn_rshift(BigNum *res, const BigNum *num1, int nbits);
 int bn_and(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 int bn_or(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                       /*done*/
 int bn_xor(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
-
 
 /* Modular Arithmetic */
 int bn_mod_exp(BigNum *res, const BigNum *num1, const BigNum *exp, const BigNum *m, Arena *arena);
@@ -129,7 +131,6 @@ int bn_mod_inverse(BigNum *res, const BigNum *num1, const BigNum *n, Arena *aren
  *  1 --> num1 < num2
  *  2 --> num1 = num2
 */
-
 int bn_compare(const BigNum *num1, const BigNum *num2);                                             /*done*/
 int bn_ucompare(const BigNum *num1, const BigNum *num2);                                            /*done*/
 int bn_is_zero(const BigNum *num);                                                                  /*done*/

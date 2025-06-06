@@ -1,4 +1,8 @@
 /*
+ * Copyright (C) 2025 Mina Albert Saeed
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+/*
     Copyright (C) 2025  Mina Albert Saeed mina.albert.saeed@gmail.com
 
     This program is free software; you can redistribute it and/or

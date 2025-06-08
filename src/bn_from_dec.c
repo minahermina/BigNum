@@ -9,7 +9,7 @@ BigNum*
 bn_from_dec(const char *str, size_t len, Arena* arena)
 {
     BigNum *num;
-    const char *hex_str;
+    char *hex_str;
 
     MUST(str != NULL, "str pointer is NULL in bn_from_dec");
     MUST(len != 0, "len is 0 in bn_from_dec");
@@ -20,6 +20,6 @@ bn_from_dec(const char *str, size_t len, Arena* arena)
     printf("hex string is: %s\n", hex_str);
     num = bn_from_hex(hex_str, strlen(hex_str), arena);
 
-
+    free(hex_str);
     return num;
 }

@@ -6,7 +6,7 @@
 #include <utils.h>
 
 void
-bn_resize(BigNum* num, size_t newsize, Arena *arena)
+bn_resize(BigNum *num, size_t newsize, Arena *arena)
 {
     MUST(num != NULL, "num pointer is NULL in bn_resize");
 
@@ -16,11 +16,11 @@ bn_resize(BigNum* num, size_t newsize, Arena *arena)
         if (arena == NULL) {
             num->words = (BigNumWord*) realloc(num->words, (num->capacity * sizeof(BigNumWord)));
         } else {
-            num->words = (BigNumWord*) arena_realloc(arena, num->words, num->size, num->capacity);
+            num->words = (BigNumWord*) arena_realloc(arena, num->words, num->size, (num->capacity * sizeof(BigNumWord)));
         }
     }
 
-    assert(num->words != NULL);
+    MUST(num->words != NULL, "num->words is NULL in bn_resize");
     num->size = newsize;
     return ;
 }

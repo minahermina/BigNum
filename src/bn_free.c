@@ -11,6 +11,6 @@ bn_free(BigNum *num)
     MUST(num != NULL, "num pointer is NULL in bn_free");
     MUST(num->words != NULL, "num->words pointer is NULL in bn_free");
 
-    free(num->words);
+    bn_free_words(num);
     free(num);
 }

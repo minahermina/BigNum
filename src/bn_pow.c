@@ -2,11 +2,8 @@
  * Copyright (C) 2025 Mina Albert Saeed
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
-#include<bignum.h>
 #include <bignum.h>
 #include <utils.h>
-#include <inttypes.h>
-#include <assert.h>
 
 int
 bn_pow(BigNum *res, const BigNum *num, const BigNum *pow, Arena *arena)
@@ -29,13 +26,13 @@ bn_pow(BigNum *res, const BigNum *num, const BigNum *pow, Arena *arena)
     if (bn_is_zero(pow)) {
         bn_resize(res, 1, arena);
         res->words[0] = 1;
+        return 0;
     }
 
     /* temp for square operation*/
     bn_init(&temp, arena);
 
     bn_copy(res, num, arena);
-
     for (i = pow_bit_len - 2; i >= 0; i--) {
         bn_copy(&temp, res, arena);
 
@@ -53,7 +50,7 @@ bn_pow(BigNum *res, const BigNum *num, const BigNum *pow, Arena *arena)
     }
 
     if(arena == NULL){
-        bn_free(&temp);
+        bn_free_words(&temp);
     }
     return 0;
 

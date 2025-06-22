@@ -20,7 +20,7 @@ bn_copy(BigNum *dest, const BigNum *src, Arena *arena)
     bn_resize(dest, src->size, arena);
 
     dest->negative = src->negative;
-    for(i = 0; i < dest->size; ++i){
+    for(i = 0; i < src->size; ++i){
         dest->words[i] = src->words[i];
     }
 }

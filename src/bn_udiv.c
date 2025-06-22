@@ -36,7 +36,9 @@ bn_udiv(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena
     }
 
     bn_copy(&sub_res, num1, arena);
-    bn_set_zero(q);
+    if(bn_set_zero(q) < 0){
+        return -1;
+    }
 
     cnt = 0;
     ucompare_result = bn_ucompare(&sub_res, num2);

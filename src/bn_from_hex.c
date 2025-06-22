@@ -9,12 +9,11 @@ BigNum*
 bn_from_hex(const char *str, size_t len, Arena* arena)
 {
     BigNum *num = bn_new(arena);
+    size_t start_idx = 0, chars_per_word, word_idx, words_size, i, j;
+    BigNumWord current_word, value;
 
     MUST(num != NULL, "Allocating memory in bn_from_hex");
     MUST(str != NULL, "str pointer is NULL in bn_from_hex");
-
-    size_t start_idx = 0, chars_per_word, word_idx, words_size, i, j;
-    BigNumWord current_word, value;
 
     /* Handle sign */
     if (str[0] == '-') {
@@ -64,7 +63,7 @@ bn_from_hex(const char *str, size_t len, Arena* arena)
                 value = c - 'A' + 10;
             } else { /*invalid char*/
                 if(arena == NULL) bn_free(num);
-                return NULL;
+                assert(0 && "Invalid character in input string");
             }
 
             /* Add value at the position in the current word */

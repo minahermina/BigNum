@@ -5,14 +5,14 @@
 #include <bignum.h>
 #include <utils.h>
 
-int
+void
 bn_prepend_zero_words(BigNum *num, size_t cnt, Arena *arena)
 {
     size_t oldsize, i;
     assert(num != NULL);
 
     if (cnt == 0)
-        return 0;
+        return ;
 
     oldsize = num->size;
 
@@ -27,5 +27,5 @@ bn_prepend_zero_words(BigNum *num, size_t cnt, Arena *arena)
     for (i = 0; i < cnt; i++) {
         num->words[i] = 0;
     }
-    return 0;
+    return;
 }

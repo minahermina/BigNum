@@ -5,7 +5,7 @@
 #include <bignum.h>
 #include <utils.h>
 
-int
+void
 bn_append_word(BigNum *num, const BigNumWord word, Arena *arena)
 {
     size_t oldsize;
@@ -13,7 +13,7 @@ bn_append_word(BigNum *num, const BigNumWord word, Arena *arena)
     MUST(num != NULL, "num pointer is NULL in bn_append_word");
 
     if(word == 0)
-        return 0;
+        return ;
 
     oldsize = num->size;
     bn_resize(num, oldsize + 1, arena);
@@ -23,5 +23,5 @@ bn_append_word(BigNum *num, const BigNumWord word, Arena *arena)
     /* Append the new word */
     num->words[oldsize] = word;
 
-    return 0;
+    return ;
 }

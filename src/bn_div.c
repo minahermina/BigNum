@@ -75,10 +75,10 @@ bn_div(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena 
     }
 
     if(arena == NULL){
-        bn_free(q);
-        bn_free(num1);
-        bn_free(num2);
-        bn_free(remain);
+        bn_free(q_u);
+        bn_free(remain_u);
+        bn_free(one);
+        bn_free(temp);
     }
 
     return 0;

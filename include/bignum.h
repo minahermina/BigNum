@@ -81,7 +81,7 @@ void bn_resize(BigNum* num, size_t new_size, Arena *arena);                     
  * dest is resized if it is required
 */
 void bn_copy(BigNum *dest, const BigNum *src, Arena *arena);                                        /*done*/
-BigNum* bn_dup(BigNum *src, Arena *arena);                                                          /*done*/
+BigNum* bn_dup(const BigNum *src, Arena *arena);                                                          /*done*/
 void bn_append_word(BigNum* num, const BigNumWord word, Arena *arena);                               /*done*/
 void bn_prepend_zero_words(BigNum* num, size_t cnt , Arena *arena);                                  /*done*/
 void bn_print_word(const BigNumWord word, char format);

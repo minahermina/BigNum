@@ -5,6 +5,10 @@
 #include<bignum.h>
 #include<utils.h>
 
+/* 
+ * The int return type is used for consistency with other arithmetic utility functions.
+ * This function always returns 0, as any memory issues are caught by assertions. 
+ */
 int
 bn_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
 {

@@ -16,7 +16,7 @@ bn_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
     MUST(num1 != NULL, "num1 pointer is NULL in bn_usubtract");
     MUST(num2 != NULL, "num2 pointer is NULL in bn_usubtract");
 
-    /* check for num1 > num2 */
+    /* check if num1 < num2 */
     cmp = bn_ucompare(num1, num2);
     if (cmp == 1){
         return -1;

@@ -31,7 +31,9 @@ int bn_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena)
     temp = bn_new(arena);
     MUST(temp != NULL, "Failed to allocate temp in bn_mul");
 
-    bn_set_zero(res);
+    if(bn_set_zero(res) < 0){
+        return -1;
+    }
 
     bn_copy(res, num2, arena);
 

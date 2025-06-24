@@ -9,7 +9,7 @@ int
 bn_pow(BigNum *res, const BigNum *num, const BigNum *pow, Arena *arena)
 {
 
-    BigNum temp;
+    BigNum *temp;
     int i, pow_bit_len;
     MUST(res != NULL, "res pointer is NULL in bn_pow");
     MUST(num != NULL, "num1 pointer is NULL in bn_pow");
@@ -30,27 +30,27 @@ bn_pow(BigNum *res, const BigNum *num, const BigNum *pow, Arena *arena)
     }
 
     /* temp for square operation*/
-    bn_init(&temp, arena);
+    temp = bn_new(arena);
 
     bn_copy(res, num, arena);
     for (i = pow_bit_len - 2; i >= 0; i--) {
-        bn_copy(&temp, res, arena);
+        bn_copy(temp, res, arena);
 
         /* square the res */
-        bn_mul(res, &temp, &temp, arena);
+        bn_mul(res, temp, temp, arena);
 
         /* if bit is set, multiply num to res */
         if (bn_is_bit_set(pow, i)) {
             /* Copy res to temp */
-            bn_copy(&temp, res, arena);
+            bn_copy(temp, res, arena);
 
             /* multiply res by num*/
-            bn_mul(res, &temp, num, arena);
+            bn_mul(res, temp, num, arena);
         }
     }
 
     if(arena == NULL){
-        bn_free_words(&temp);
+        bn_free(temp);
     }
     return 0;
 

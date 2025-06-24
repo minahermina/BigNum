@@ -12,13 +12,12 @@
 int
 bn_udiv(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena)
 {
-    BigNum temp1, sub_res, *temp_q;
+    BigNum *temp1, *sub_res, *temp_q;
     size_t cnt;
     int ucompare_result;
 
-    /* TODO: implement a util to init a pre-existed BigNum */
-    bn_init(&temp1, arena);
-    bn_init(&sub_res, arena);
+    temp1 = bn_new(arena);
+    sub_res = bn_new(arena);
 
     MUST(q      != NULL, "q pointer is NULL in bn_udiv");
     MUST(num1   != NULL, "num1 pointer is NULL in bn_udiv");
@@ -35,26 +34,33 @@ bn_udiv(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena
         }
     }
 
-    bn_copy(&sub_res, num1, arena);
+    bn_copy(sub_res, num1, arena);
     if(bn_set_zero(q) < 0){
         return -1;
     }
 
     cnt = 0;
-    ucompare_result = bn_ucompare(&sub_res, num2);
+    ucompare_result = bn_ucompare(sub_res, num2);
     while(ucompare_result == 0 || ucompare_result == 2){
-        bn_copy(&temp1, &sub_res, arena);
-        if(bn_usubtract(&sub_res, &temp1, num2, arena) < 0){
+        bn_copy(temp1, sub_res, arena);
+        if(bn_usubtract(sub_res, temp1, num2, arena) < 0){
             return -1;
         }
-        ucompare_result = bn_ucompare(&sub_res, num2);
+        ucompare_result = bn_ucompare(sub_res, num2);
         cnt++;
     }
 
     /* now remain = sub_res, remain = cnt */
-    bn_copy(remain, &sub_res, arena);
+    bn_copy(remain, sub_res, arena);
 
     temp_q = bn_from_int(cnt, arena);
     bn_copy(q, temp_q, arena);
+
+    if(arena == NULL){
+        bn_free(temp1);
+        bn_free(sub_res);
+        bn_free(temp_q);
+    }
+
     return 0;
 }

@@ -36,7 +36,7 @@ char* dec_to_hex(const char* str, size_t len);
 char* bin_to_hex(const char* str, size_t len);
 
 /*
- * Helper function to validate inputs and calc word and bit indices.
+ * Helper function to calc word and bit indices.
  */
 int bn_get_indices(const BigNum *num, int n, size_t *word_idx, size_t *bit_idx);
 #endif /*BIGUM_UTILS*/

@@ -127,7 +127,7 @@ int bn_div(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Ar
 int bn_udiv(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);       /*done*/
 
 int bn_mod(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
-int bn_gcd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
+int bn_gcd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 
 /* Bitwise Operation */
 BigNumWord bn_lshift_word(const BigNumWord word, size_t nbits);                                     /*done*/

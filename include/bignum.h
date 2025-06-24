@@ -16,6 +16,16 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+/*
+ * Function return conventions:
+ * - Arithmetic operations: 0 = success, -1 = error
+ *      (Note: Functions like bn_uadd always return 0 since memory errors 
+ *      are handled via assertions - the return value is for consistency)
+ * - Comparison functions: return comparison result (-1, 0, 1, 2)
+ * - Memory errors handled via assertions
+ * - 
+*/
+
 #ifndef BIGNUM
 #define BIGNUM
 
@@ -90,25 +100,31 @@ BigNum *bn_from_dec(const char *str, size_t len, Arena *arena);                 
 BigNum *bn_from_hex(const char *str, size_t len, Arena *arena);                                     /*done*/
 
 /* Arithmetic */
+
+/* 
+ * The int return type is used for consistency with other arithmetic utility functions.
+ * This function always returns 0, as any memory issues are caught by assertions. 
+ */
 int bn_uadd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                     /*done*/
+
 int bn_add(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 int bn_usubtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                /*done*/
 int bn_subtract(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                 /*done*/
 int bn_mul(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 
 /* res = num ^ pow */
-int bn_pow(BigNum *res, const BigNum *num, const BigNum *pow, Arena *arena);                      /*done*/
+int bn_pow(BigNum *res, const BigNum *num, const BigNum *pow, Arena *arena);                        /*done*/
 
 /*
  * Euclidean Division (https://en.wikipedia.org/wiki/Euclidean_division)
- * following this equation: (num1 = q * num2 + remain) as 0 <= remain < |num2|, ,
+ * following this equation: (num1 = q * num2 + remain) as 0 <= remain < |num2| .
  */
-int bn_div(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
+int bn_div(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);        /*done*/
 
 /*
  * divide num1 by num2 discarding their signs and compute q and remain
  */
-int bn_udiv(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);
+int bn_udiv(BigNum *q, BigNum *remain, const BigNum *num1, const BigNum *num2, Arena *arena);       /*done*/
 
 int bn_mod(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 int bn_gcd(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);
@@ -127,7 +143,7 @@ int bn_mod_exp(BigNum *res, const BigNum *num1, const BigNum *exp, const BigNum 
 int bn_mod_inverse(BigNum *res, const BigNum *num1, const BigNum *n, Arena *arena);
 
 /*
- *  NOTE: this function assume that either num1 or num2 has no leading zero words
+ * return values:
  * -1 --> indicates error
  *  0 --> num1 > num2
  *  1 --> num1 < num2

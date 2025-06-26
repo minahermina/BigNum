@@ -82,9 +82,9 @@ void bn_resize(BigNum* num, size_t new_size, Arena *arena);                     
  * dest is resized if it is required
 */
 void bn_copy(BigNum *dest, const BigNum *src, Arena *arena);                                        /*done*/
-BigNum* bn_dup(const BigNum *src, Arena *arena);                                                          /*done*/
-void bn_append_word(BigNum* num, const BigNumWord word, Arena *arena);                               /*done*/
-void bn_prepend_zero_words(BigNum* num, size_t cnt , Arena *arena);                                  /*done*/
+BigNum* bn_dup(const BigNum *src, Arena *arena);                                                    /*done*/
+void bn_append_word(BigNum* num, const BigNumWord word, Arena *arena);                              /*done*/
+void bn_prepend_zero_words(BigNum* num, size_t cnt , Arena *arena);                                 /*done*/
 void bn_print_word(const BigNumWord word, char format);
 void bn_print_words(const BigNum* num, char format);                                                /*done*/
 void bn_print(const BigNum* num, char format);                                                      /*done*/
@@ -92,9 +92,9 @@ void bn_free_words(BigNum *num);                                                
 void bn_free(BigNum *num);                                                                          /*done*/
 
 /* Conversion */
-int *bn_bn2dec(const BigNum *num, char *dest, size_t len);
-int *bn_bn2hex(const BigNum *num, char *dest, size_t len);
-int *bn_bn2bin(const BigNum *num, char *dest, size_t len);
+char *bn_bn2dec(const BigNum *num, Arena *arena);
+char *bn_bn2hex(const BigNum *num, Arena *arena);
+char *bn_bn2bin(const BigNum *num, Arena *arena);
 BigNum *bn_from_int(int n, Arena* arena);                                                           /*done*/
 BigNum *bn_from_bin(const char *str, size_t len, Arena *arena);                                     /*done*/
 BigNum *bn_from_dec(const char *str, size_t len, Arena *arena);                                     /*done*/

@@ -152,7 +152,7 @@ int bn_or(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);   
 int bn_xor(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);                      /*done*/
 
 /* Modular Arithmetic */
-int bn_mod_exp(BigNum *res, const BigNum *num1, const BigNum *exp, const BigNum *m, Arena *arena);
+int bn_mod_pow(BigNum *res, const BigNum *num1, const BigNum *pow, const BigNum *mod, Arena *arena);/*done*/
 int bn_mod_inverse(BigNum *res, const BigNum *num1, const BigNum *num2, Arena *arena);              /*done*/
 
 /*

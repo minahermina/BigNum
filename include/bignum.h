@@ -17,13 +17,29 @@
 */
 
 /*
- * Function return conventions:
- * - Arithmetic operations: 0 = success, -1 = error
- *      (Note: Functions like bn_uadd always return 0 since memory errors 
- *      are handled via assertions - the return value is for consistency)
- * - Comparison functions: return comparison result (-1, 0, 1, 2)
- * - Memory errors handled via assertions
- * - 
+Function return conventions:
+
+==> Arithmetic operations: 0 = success, -1 = error
+    (Note: Functions like bn_uadd always return 0 since memory errors 
+    are handled via assertions - the return value is for consistency)
+
+==> Comparison functions: return comparison result (-1, 0, 1, 2)
+
+==> Memory errors handled via assertions
+
+==> Most of the utils that stores the result in the passed `res` parameter assumes 
+    that `res` is a valid pointer to a valid BigNum 
+    and res is resized if required
+
+==> TODOs for BigNum Operations:
+    [] Optimize division using for example (optimized school division, Newton-Raphson, Burnikel-Ziegler(very large numbers)).
+    [] Optimize Multiplication using Karatsuba algorithm.
+    [] Optimize exponentiation using CRT and Reduction algorithms.
+    [] Implement robust error handling system using error codes.
+    [] Implement cryptographic utilities: PRNG, and Fermat primality test
+    [] Implement utils to convert the BigNum to different radixes(decimal, hex and binary)
+    [] Implement utils to convert the BigNum to different radixes(decimal, hex and binary)
+
 */
 
 #ifndef BIGNUM
@@ -77,10 +93,6 @@ BigNum* bn_zero(Arena *arena);                                                  
 int bn_set_zero(BigNum *num);                                                                       /*done*/
 void bn_resize(BigNum* num, size_t new_size, Arena *arena);                                         /*done*/
 
-/*
- * The caller must ensure that dest is actually a valid pointer to a valid Bignum
- * dest is resized if it is required
-*/
 void bn_copy(BigNum *dest, const BigNum *src, Arena *arena);                                        /*done*/
 BigNum* bn_dup(const BigNum *src, Arena *arena);                                                    /*done*/
 void bn_append_word(BigNum* num, const BigNumWord word, Arena *arena);                              /*done*/

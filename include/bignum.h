@@ -38,7 +38,6 @@ Function return conventions:
     [] Implement robust error handling system using error codes.
     [] Implement cryptographic utilities: PRNG, and Fermat primality test
     [] Implement utils to convert the BigNum to different radixes(decimal, hex and binary)
-    [] Implement utils to convert the BigNum to different radixes(decimal, hex and binary)
 
 */
 

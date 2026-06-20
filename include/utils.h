@@ -19,6 +19,8 @@
 #ifndef BIGUM_UTILS
 #define BIGUM_UTILS
 #include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
 #include <string.h>
 #include <inttypes.h>
 #include <bignum.h>

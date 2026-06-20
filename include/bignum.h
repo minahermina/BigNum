@@ -46,7 +46,7 @@ Function return conventions:
 
 #include <stdlib.h>
 #include <stdint.h>
-#include <arena_allocator.h>
+#include <arena.h>
 
 /* Previously had custom handling for architectures, but this (from libtommath) is a better solution */
 #if defined(__x86_64__) || defined(_M_X64) || defined(_M_AMD64) || \
